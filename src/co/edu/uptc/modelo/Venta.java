@@ -1,4 +1,4 @@
 package co.edu.uptc.modelo;
 
-public class MasVendidos{
+public class Venta{
 }
