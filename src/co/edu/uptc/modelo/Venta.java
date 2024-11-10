@@ -1,42 +1,29 @@
 package co.edu.uptc.modelo;
 
-import java.util.ArrayList;
-
 public class Venta{
-	private        String            codigoVendedor;
-	private        String            codigoProducto;
-	private        short             cantidad;
-
-	public Venta (String paramCodigoVendedor, String paramCodigoProducto, short paramCantidad){
-		codigoVendedor = paramCodigoVendedor;
-		codigoProducto = paramCodigoProducto;
-		cantidad       = paramCantidad;
-	}
+	private Producto producto;
+	private int      cantidad;
 
 	public Venta (){
 	}
 
-	public String getCodigoVendedor (){
-		return codigoVendedor;
+	public void setProducto (Producto paramProducto){
+		producto = paramProducto;
 	}
 
-	public void setCodigoVendedor (String paramCodigoVendedor){
-		codigoVendedor = paramCodigoVendedor.toUpperCase();
+	public Producto getProducto (){
+		return producto;
 	}
 
-	public String getCodigoProducto (){
-		return codigoProducto;
+	public void setCantidad (int paramCantidad){
+		cantidad = paramCantidad;
 	}
 
-	public void setCodigoProducto (String paramCodigoProducto){
-		codigoProducto = paramCodigoProducto.toUpperCase();
-	}
-
-	public short getCantidad (){
+	public int getCantidad (){
 		return cantidad;
 	}
 
-	public void setCantidad (short paramCantidad){
-		cantidad = paramCantidad;
+	public String getCodigoProducto (){
+		return producto.getCodigo();
 	}
 }

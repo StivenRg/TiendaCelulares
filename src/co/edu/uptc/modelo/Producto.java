@@ -23,7 +23,7 @@ public class Producto{
 	}
 
 	public void setMarca (String paramMarca){
-		marca = paramMarca;
+		marca = paramMarca.toUpperCase();
 	}
 
 	public String getLinea (){
@@ -31,7 +31,7 @@ public class Producto{
 	}
 
 	public void setLinea (String paramLinea){
-		linea = paramLinea;
+		linea = paramLinea.toUpperCase();
 	}
 
 	public String getCodigo (){
@@ -39,7 +39,7 @@ public class Producto{
 	}
 
 	public void setCodigo (String paramCodigo){
-		codigo = paramCodigo;
+		codigo = paramCodigo.toUpperCase();
 	}
 
 	public double getPrecio (){

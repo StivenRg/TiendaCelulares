@@ -1,23 +1,26 @@
 package co.edu.uptc.modelo;
 
+import co.edu.uptc.negocio.Inventario;
+
+import javax.swing.*;
+import java.util.ArrayList;
+
 public class Vendedor{
-	private String nombre;
-	private long   numeroTelefono;
-	private long   numeroID;
-	private String tipoID;
-	private long   numeroCuenta;
-	private String tipoCuenta;
+	private       String            nombre;
+	private       long              numeroTelefono;
+	private       long              numeroID;
+	private       String            tipoID;
+	private       long              numeroCuenta;
+	private       String            tipoCuenta;
+	private final ArrayList <Venta> ventasVendedor = new ArrayList <>();
 
-	public Vendedor (String nombre, long numeroTelefono, long numeroID, String tipoID, long numeroCuenta, String tipoCuenta){
-		this.nombre         = nombre;
-		this.numeroTelefono = numeroTelefono;
-		this.numeroID       = numeroID;
-		this.tipoID         = tipoID;
-		this.numeroCuenta   = numeroCuenta;
-		this.tipoCuenta     = tipoCuenta;
-	}
-
-	public Vendedor (){
+	public Vendedor (String paramNombre, long paramNumeroTelefono, long paramNumeroID, String paramTipoID, long paramNumeroCuenta, String paramTipoCuenta){
+		nombre         = paramNombre.toUpperCase();
+		numeroTelefono = paramNumeroTelefono;
+		numeroID       = paramNumeroID;
+		tipoID         = paramTipoID.toUpperCase();
+		numeroCuenta   = paramNumeroCuenta;
+		tipoCuenta     = paramTipoCuenta.toUpperCase();
 	}
 
 	public String getNombre (){
@@ -25,7 +28,7 @@ public class Vendedor{
 	}
 
 	public void setNombre (String paramNombre){
-		nombre = paramNombre;
+		nombre = paramNombre.toUpperCase();
 	}
 
 	public long getNumeroTelefono (){
@@ -49,10 +52,10 @@ public class Vendedor{
 	}
 
 	public void setTipoID (String paramTipoID){
-		tipoID = paramTipoID;
+		tipoID = paramTipoID.toUpperCase();
 	}
 
-	public long setNumeroCuenta (){
+	public long getNumeroCuenta (){
 		return numeroCuenta;
 	}
 
@@ -65,6 +68,37 @@ public class Vendedor{
 	}
 
 	public void setTipoCuenta (String paramTipoCuenta){
-		tipoCuenta = paramTipoCuenta;
+		tipoCuenta = paramTipoCuenta.toUpperCase();
+	}
+
+	public ArrayList <Venta> getVentasVendedor (){
+		return ventasVendedor;
+	}
+
+	public void agregarVenta (String paramCodigoProducto, int paramCantidad){
+		Producto locProducto = obtenerProducto(paramCodigoProducto);
+		if (locProducto == null) return;
+
+		if (locProducto.getCantidad() <= paramCantidad){
+			JOptionPane.showMessageDialog(null, "No queda stock suficiente para la venta.", "Stock insuficiente", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+
+		Venta venta = new Venta();
+		venta.setProducto(locProducto);
+		venta.setCantidad(venta.getCantidad() + paramCantidad);
+		Inventario.descontarProducto(locProducto, paramCantidad);
+		ventasVendedor.add(venta);
+		JOptionPane.showMessageDialog(null, "Venta registrada con exito.", "Venta registrada", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private static Producto obtenerProducto (String paramCodigoProducto){
+		for (Producto locProducto : Inventario.getProductos()){
+			if (locProducto.getCodigo().equals(paramCodigoProducto)){
+				return locProducto;
+			}
+		}
+		JOptionPane.showMessageDialog(null, "Producto no encontrado.", "Producto no encontrado", JOptionPane.INFORMATION_MESSAGE);
+		return null;
 	}
 }
