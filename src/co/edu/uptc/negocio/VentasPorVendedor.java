@@ -47,7 +47,7 @@ public class VentasPorVendedor{
 			long   numeroCuenta   = locVendedor.getNumeroCuenta();
 			String tipoCuenta     = locVendedor.getTipoCuenta();
 			int    cantidadVentas = obtenerCantidadVentasVendedor(locVendedor);
-			tablaVentasPorVendedor.append(String.format("%-3d | %-13s | %-12s | $%-10.2f | $%-16d | %-10s | %-4d%n", i, ID, nombre, totalComision, numeroCuenta, tipoCuenta, cantidadVentas));
+			tablaVentasPorVendedor.append(String.format("%-3d | %-13s | %-12s | $%-10.2f | %-16d | %-10s | %-4d%n", i, ID, nombre, totalComision, numeroCuenta, tipoCuenta, cantidadVentas));
 		}
 		JOptionPane.showMessageDialog(null, tablaVentasPorVendedor.toString(), "Ventas por vendedor", JOptionPane.PLAIN_MESSAGE);
 	}

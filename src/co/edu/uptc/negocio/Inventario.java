@@ -119,8 +119,8 @@ public class Inventario{
 			String codigoProducto = locProducto.getCodigo();
 			int    cantidad       = locProducto.getCantidad();
 			double precioBase     = locProducto.getPrecio() * cantidad;
-			double precioVenta    = (precioBase + calcularImpuesto(precioBase)) * cantidad;
 			double impuesto       = calcularImpuesto(precioBase) * cantidad;
+			double precioVenta    = precioBase + impuesto;
 			double comision       = precioBase * cantidad * 0.05;
 			double ganancia       = precioBase - comision;
 			tablaInventario.append(String.format("%-3d | %-10s | %-10d | $%-10.1f | $%-10.2f | $%-10.2f | $%-10.2f | $%-10.2f%n",
