@@ -63,4 +63,7 @@ public class VentanaPrincipal extends JFrame {
 		//TODO investigar como cerrar un JFRAME
 
 	}
+
+	public void cargarInfoPersona (){
+	}
 }
