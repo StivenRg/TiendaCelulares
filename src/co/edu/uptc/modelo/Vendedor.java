@@ -20,7 +20,7 @@ public class Vendedor{
 	public Vendedor (){
 	}
 
-	public String nombre (){
+	public String getNombre (){
 		return nombre;
 	}
 

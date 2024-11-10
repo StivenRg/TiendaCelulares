@@ -18,7 +18,7 @@ public class Producto{
 	public Producto (){
 	}
 
-	public String getMmarca (){
+	public String getMarca (){
 		return marca;
 	}
 
@@ -54,7 +54,7 @@ public class Producto{
 		return cantidad;
 	}
 
-	public void agregarCantidad (int paramCantidad){
-		cantidad += paramCantidad;
+	public void setCantidad (int paramCantidad){
+		cantidad = paramCantidad;
 	}
 }
