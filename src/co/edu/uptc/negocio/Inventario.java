@@ -102,13 +102,13 @@ public class Inventario{
 	private static String generarCabecerasTablaInventario (){
 		StringBuilder tablaInventario = new StringBuilder();
 		String        columna0        = "Codigo";
-		String        columna1        = "Numero total de celulares";
-		String        columna2        = "TotalPrecio base";
-		String        columna3        = "Total Precio de venta";
-		String        columna4        = "Total de Impuestos a pagar";
-		String        columna5        = "Total comisiones de venta";
-		String        columna6        = "Total ganancias";
-		tablaInventario.append(String.format("#### | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s%n%n", columna0, columna1, columna2, columna3, columna4, columna5, columna6));
+		String        columna1        = "Total celulares";
+		String        columna2        = "Total Precio base";
+		String        columna3        = "Total Precio venta";
+		String        columna4        = "Total Impuestos";
+		String        columna5        = "Total comisiones";
+		String        columna6        = "Total ganancia";
+		tablaInventario.append(String.format("###|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s|%-15s%n", columna0, columna1, columna2, columna3, columna4, columna5, columna6));
 		return tablaInventario.toString();
 	}
 
@@ -121,9 +121,9 @@ public class Inventario{
 			double precioBase     = locProducto.getPrecio() * cantidad;
 			double impuesto       = calcularImpuesto(precioBase) * cantidad;
 			double precioVenta    = precioBase + impuesto;
-			double comision       = precioBase * cantidad * 0.05;
+			double comision       = precioBase * 0.05;
 			double ganancia       = precioBase - comision;
-			tablaInventario.append(String.format("%-3d | %-10s | %-10d | $%-10.1f | $%-10.2f | $%-10.2f | $%-10.2f | $%-10.2f%n",
+			tablaInventario.append(String.format("%-,3d|%-15s|%-,15d|$%-,15.2f|$%-,15.2f|$%-,15.2f|$%-,15.2f|$%-,15.2f%n",
 			                                     i,
 			                                     codigoProducto,
 			                                     cantidad,
@@ -145,8 +145,8 @@ public class Inventario{
 		calcularTotalImpuesto();
 		calcularTotalComision();
 		calcularTotalGanancia();
-		tablaInventario.append(String.format("%-3s | %-10s | $%-10d | $%-10.1f | $%-10.2f | $%-10.2f | $%-10.2f | $%-10.2f%n",
-		                                     "---",
+		tablaInventario.append(String.format("%-3s|%-15s|%-,15d|$%-,15.2f|$%-,15.2f|$%-,15.2f|$%-,15.2f|$%-,15.2f%n",
+		                                     "-",
 		                                     "Totales",
 		                                     totalCantidad,
 		                                     totalPrecioBase,

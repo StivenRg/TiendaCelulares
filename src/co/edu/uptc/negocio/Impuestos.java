@@ -44,7 +44,7 @@ public class Impuestos{
 		String        columna0       = "Impuesto";
 		String        columna1       = "Total bases grabables";
 		String        columna2       = "Total impuesto";
-		tablaImpuestos.append(String.format("%-15s | %-20s | %-20s%n", columna0, columna1, columna2));
+		tablaImpuestos.append(String.format("%-20s|%-20s|%-20s%n", columna0, columna1, columna2));
 		return tablaImpuestos.toString();
 	}
 
@@ -57,11 +57,11 @@ public class Impuestos{
 
 		String fila1 = "Impuesto 5%";
 		String fila2 = "Impuesto 19%";
-		tablaImpuestos.append(String.format("%-15s | $%-20.2f | $%-20.2f", fila1, baseGrabableImpuesto5, impuesto5));
-		tablaImpuestos.append(String.format("%-15s | $%-20.2f | $%-20.2f", fila2, baseGrabableImpuesto19, impuesto19));
+		tablaImpuestos.append(String.format("%-20s|$%-20.2f|$%-20.2f%n", fila1, baseGrabableImpuesto5, impuesto5));
+		tablaImpuestos.append(String.format("%-20s|$%-20.2f|$%-20.2f%n", fila2, baseGrabableImpuesto19, impuesto19));
 
 		String fila3 = "Sumatoria de Totales";
-		tablaImpuestos.append(String.format("%-15s | $%-20.2f | $%-20.2f", fila3, totalBaseGrabable, totalImpuesto));
+		tablaImpuestos.append(String.format("%-20s|$%-20.2f|$%-20.2f", fila3, totalBaseGrabable, totalImpuesto));
 
 		JOptionPane.showMessageDialog(null, tablaImpuestos.toString(), "Impuestos", JOptionPane.PLAIN_MESSAGE);
 	}

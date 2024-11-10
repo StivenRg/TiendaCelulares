@@ -1,69 +1,61 @@
 package co.edu.uptc.gui;
 
-import java.awt.BorderLayout;
+import co.edu.uptc.negocio.Inventario;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 
-public class VentanaPrincipal extends JFrame {
-
+public class VentanaPrincipal extends JFrame{
 	private PanelInventario info;
-	private PanelVentas infoVentas;
-	private PanelBotones botones;
-	private PanelPersona persona;
+	private PanelVentas     infoVentas;
+	private PanelBotones    botones;
+	private PanelPersona    persona;
 
-	public VentanaPrincipal(){
+	public VentanaPrincipal (){
 		setTitle("Mi Tienda");
-		setSize(1100,600);
+		setSize(1100, 600);
 
-		Evento evento= new Evento(this);
-		info= new PanelInventario(evento);
-		infoVentas= new PanelVentas(evento);
-		botones = new PanelBotones(evento);
-		persona = new PanelPersona(evento);
+		Evento evento = new Evento(this);
+		info       = new PanelInventario(evento);
+		infoVentas = new PanelVentas(evento);
+		botones    = new PanelBotones(evento);
+		persona    = new PanelPersona(evento);
 
 		setLayout(new BorderLayout());
-		add(info,BorderLayout.WEST);
-		add(persona,BorderLayout.CENTER);
-		add(infoVentas,BorderLayout.EAST);
-		add(botones,BorderLayout.SOUTH);
-
-
-	}
-	public static void main(String[] args) {
-		VentanaPrincipal nueva= new VentanaPrincipal();
-		nueva.setVisible(true);
+		add(info, BorderLayout.WEST);
+		add(persona, BorderLayout.CENTER);
+		add(infoVentas, BorderLayout.EAST);
+		add(botones, BorderLayout.SOUTH);
 	}
 
-	public void cargarInfoInventario() {
-		JOptionPane.showMessageDialog(this, "Cargar contenido de inventario" );
+	public static void main (String[] args){
+		VentanaPrincipal ventana = new VentanaPrincipal();
+		ventana.setVisible(true);
+	}
+
+	public void cargarInfoInventario (){
 		//TODO implementar logica para separa información
 		// trae lo que hay en textArea en String
 		info.obtenerDatos();
+		JOptionPane.showMessageDialog(this, "Productos Agregados al Stock");
 	}
 
-	public void cargarInfoVentas() {
+	public void cargarInfoVentas (){
 		//TODO implementar logica para separa información
 		// trae lo que hay en textArea en String
 		infoVentas.obtenerDatos();
 	}
 
-	public void generarInformeInventario() {
-		JOptionPane.showMessageDialog(this, "Crear infome de inventario" );
-		DialogoLista nuevo= new DialogoLista();
-		String encabezado="# celulares | Total Precio base |"
-				+ "Total Precio de venta |"
-				+ "Total de Impuestos a pagar |"
-				+ "Total comisiones de venta |"
-				+ "Total ganancias ";
-		nuevo.agregrarTexto(encabezado);
-		nuevo.setVisible(true);
-	}
-	public void salir() {
-		//TODO investigar como cerrar un JFRAME
-
+	public void generarInformeInventario (){
+		JOptionPane.showMessageDialog(this, "Cargando Inventario...");
+		Inventario.mostarTablaInventario();
 	}
 
 	public void cargarInfoPersona (){
+	}
+
+	public void salir (){
+		//TODO investigar como cerrar un JFRAME
+		System.exit(0);
 	}
 }

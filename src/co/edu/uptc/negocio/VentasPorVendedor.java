@@ -33,7 +33,7 @@ public class VentasPorVendedor{
 		String        columna3               = "# de cuenta";
 		String        columna4               = "Tipo de cuenta";
 		String        columna5               = "# de ventas";
-		tablaVentasPorVendedor.append(String.format("#### | %-13s | %-12s | %-12s | %-16s | %-10s | %-4s%n", columna0, columna1, columna2, columna3, columna4, columna5));
+		tablaVentasPorVendedor.append(String.format("####|%-13s|%-12s|%-12s|%-16s|%-10s|%-4s%n", columna0, columna1, columna2, columna3, columna4, columna5));
 		return tablaVentasPorVendedor.toString();
 	}
 
@@ -47,7 +47,7 @@ public class VentasPorVendedor{
 			long   numeroCuenta   = locVendedor.getNumeroCuenta();
 			String tipoCuenta     = locVendedor.getTipoCuenta();
 			int    cantidadVentas = obtenerCantidadVentasVendedor(locVendedor);
-			tablaVentasPorVendedor.append(String.format("%-3d | %-13s | %-12s | $%-10.2f | %-16d | %-10s | %-4d%n", i, ID, nombre, totalComision, numeroCuenta, tipoCuenta, cantidadVentas));
+			tablaVentasPorVendedor.append(String.format("%,3d|%-13s|%-12s|$%,10.2f|%,16d|%-10s|%,4d%n", i, ID, nombre, totalComision, numeroCuenta, tipoCuenta, cantidadVentas));
 		}
 		JOptionPane.showMessageDialog(null, tablaVentasPorVendedor.toString(), "Ventas por vendedor", JOptionPane.PLAIN_MESSAGE);
 	}
