@@ -24,17 +24,22 @@ public class PanelInventario extends JPanel{
 	}
 
 	public void obtenerDatos (){
-		final String separadorDato  = "\\|";
-		final String separadorLinea = "\n";
-		String       lineas         = txInformacion.getText();
-		String[] lineasSeparadas = lineas.split(separadorLinea);
+		final String separadorDato   = "\\|";
+		final String separadorLinea  = "\n";
+		String       lineas          = txInformacion.getText();
+		String[]     lineasSeparadas = lineas.split(separadorLinea);
 		for (String locLinea : lineasSeparadas){
 			String[] locDato = locLinea.strip().split(separadorDato);
-			locDato[0] = locDato[0].strip();
-			locDato[1] = locDato[1].strip();
-			locDato[2] = locDato[2].strip();
-			locDato[3] = locDato[3].strip();
-			locDato[4] = locDato[4].strip();
+			try{
+				locDato[0] = locDato[0].strip();
+				locDato[1] = locDato[1].strip();
+				locDato[2] = locDato[2].strip();
+				locDato[3] = locDato[3].strip();
+				locDato[4] = locDato[4].strip();
+			} catch (ArrayIndexOutOfBoundsException e){
+				System.err.println("Error en el formato de inventario" + locLinea);
+				return;
+			}
 
 			Producto producto = new Producto(locDato[0], locDato[1], locDato[2], Double.parseDouble(locDato[3]), Integer.parseInt(locDato[4]));
 			Inventario.agregarProducto(producto);
