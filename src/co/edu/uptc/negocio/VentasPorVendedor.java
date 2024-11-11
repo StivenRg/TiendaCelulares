@@ -4,6 +4,7 @@ import co.edu.uptc.modelo.Vendedor;
 import co.edu.uptc.modelo.Venta;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class VentasPorVendedor{
@@ -19,6 +20,7 @@ public class VentasPorVendedor{
 		if (locVendedor == null){
 			return;
 		}
+
 		for (Vendedor vendedor : listaVendedores){
 			if (locVendedor.getNumeroID() == (vendedor.getNumeroID())){
 				return;
@@ -66,27 +68,38 @@ public class VentasPorVendedor{
 		StringBuilder tablaVentasPorVendedor = new StringBuilder();
 		String        columna0               = "Tipo ID y #";
 		String        columna1               = "Nombre";
-		String        columna2               = "Total de comision";
-		String        columna3               = "# de cuenta";
-		String        columna4               = "Tipo de cuenta";
-		String        columna5               = "# de ventas";
-		tablaVentasPorVendedor.append(String.format("####|%-13s|%-12s|%-12s|%-16s|%-10s|%-4s%n", columna0, columna1, columna2, columna3, columna4, columna5));
+		String        columna2               = "Total comision";
+		String        columna3               = "# cuenta";
+		String        columna4               = "Tipo cuenta";
+		String        columna5               = "# ventas";
+		tablaVentasPorVendedor.append(String.format("###|%-15s|%-15s|%-15s|%-16s|%-12s|%-4s%n", columna0, columna1, columna2, columna3, columna4, columna5));
 		return tablaVentasPorVendedor.toString();
 	}
 
-	public static void mostarTablaVentasPorVendedor (){
+	private static String obtenerTablaInventario (){
 		StringBuilder tablaVentasPorVendedor = new StringBuilder(generarCabecerasTablaVentasPorVendedor());
+		int           i                      = 1;
 		for (Vendedor locVendedor : listaVendedores){
-			int    i              = 1;
-			String ID             = locVendedor.getTipoID() + locVendedor.getNumeroID();
+			String ID             = locVendedor.getTipoID() + " " + locVendedor.getNumeroID();
 			String nombre         = locVendedor.getNombre();
 			double totalComision  = calcularTotalComisionVendedor(locVendedor);
 			long   numeroCuenta   = locVendedor.getNumeroCuenta();
 			String tipoCuenta     = locVendedor.getTipoCuenta();
 			int    cantidadVentas = obtenerCantidadVentasVendedor(locVendedor);
-			tablaVentasPorVendedor.append(String.format("%,3d|%-13s|%-12s|$%,10.2f|%,16d|%-10s|%,4d%n", i, ID, nombre, totalComision, numeroCuenta, tipoCuenta, cantidadVentas));
+			tablaVentasPorVendedor.append(String.format("%3d|%-15s|%-15s|$%,14.1f|%16d|%-12s|%,4d%n", i, ID, nombre, totalComision, numeroCuenta, tipoCuenta, cantidadVentas));
+			i++;
 		}
-		JOptionPane.showMessageDialog(null, tablaVentasPorVendedor.toString(), "Ventas por vendedor", JOptionPane.PLAIN_MESSAGE);
+		return tablaVentasPorVendedor.toString();
+	}
+
+	public static void mostrarTablaVentasPorVendedor (){
+		JTextArea textArea = new JTextArea(obtenerTablaInventario());
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
+		JOptionPane.showMessageDialog(null, scrollPane, "Ventas", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public static ArrayList <Venta> getListaVentas (){

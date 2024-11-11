@@ -30,19 +30,21 @@ public class PanelVentas extends JPanel{
 		String[]     lineasSeparadas = lineas.split(separadorLinea);
 		for (String locLinea : lineasSeparadas){
 			String[] locDato = locLinea.strip().split(separadorDato);
-			locDato[0] = locDato[0].strip();
-			locDato[1] = locDato[1].strip();
-			locDato[2] = locDato[2].strip();
+			try{
+				locDato[0] = locDato[0].strip();
+				locDato[1] = locDato[1].strip();
+				locDato[2] = locDato[2].strip();
+			} catch (ArrayIndexOutOfBoundsException e){
+				System.err.println("Venta no válida: " + locLinea);
+				continue;
+			}
 
 			for (Vendedor locVendedor : VentasPorVendedor.getListaVendedores()){
 				if (locVendedor.getCodigoVendedor().equals(locDato[0])){
 					locVendedor.agregarVenta(locDato[1], Integer.parseInt(locDato[2]));
-					JOptionPane.showMessageDialog(null, "Venta registrada con exito.", "Venta registrada", JOptionPane.INFORMATION_MESSAGE);
-					return;
+					break;
 				}
 			}
-
-			JOptionPane.showMessageDialog(null, "No se encontro el vendedor.", "Vendedor no encontrado", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

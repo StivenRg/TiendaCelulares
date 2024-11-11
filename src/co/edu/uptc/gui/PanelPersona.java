@@ -29,23 +29,28 @@ public class PanelPersona extends JPanel{
 		String       lineas          = txInformacion.getText();
 		String[]     lineasSeparadas = lineas.split(separadorLinea);
 		for (String locLinea : lineasSeparadas){
-			String[] locDato         = locLinea.strip().split(separadorDato);
-			String   nombre          = locDato[0].strip();
-			String   sNumeroTelefono = locDato[1].strip();
-			String   tipoID          = locDato[2].strip();
-			String   sNumeroID       = locDato[3].strip();
-			String   tipoCuenta      = locDato[4].strip();
-			String   sNumeroCuenta   = locDato[5].strip();
+			String[] locDato = locLinea.strip().split(separadorDato);
+			String   nombre, sNumeroTelefono, tipoID, sNumeroID, tipoCuenta, sNumeroCuenta;
+			try{
+				nombre          = locDato[0].strip();
+				sNumeroTelefono = locDato[1].strip();
+				sNumeroID       = locDato[2].strip();
+				tipoID          = locDato[3].strip();
+				sNumeroCuenta   = locDato[4].strip();
+				tipoCuenta      = locDato[5].strip();
+			} catch (ArrayIndexOutOfBoundsException e){
+				System.err.println("Persona no válida: " + locLinea);
+				continue;
+			}
 
 			try{
-				long     numeroTelefono = Integer.parseInt(sNumeroTelefono);
-				long     numeroID       = Integer.parseInt(sNumeroID);
-				long     numeroCuenta   = Integer.parseInt(sNumeroCuenta);
-				Vendedor vendedor       = new Vendedor(nombre, numeroTelefono, numeroID,tipoID, numeroCuenta, tipoCuenta);
+				long     numeroTelefono = Long.parseLong(sNumeroTelefono);
+				long     numeroID       = Long.parseLong(sNumeroID);
+				long     numeroCuenta   = Long.parseLong(sNumeroCuenta);
+				Vendedor vendedor       = new Vendedor(nombre, numeroTelefono, numeroID, tipoID, numeroCuenta, tipoCuenta);
 				VentasPorVendedor.agregarVendedor(vendedor);
 			} catch (NumberFormatException e){
-				JOptionPane.showMessageDialog(null, "Error en los campos numericos", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
+				System.err.println("Error en dato numerico: " + e.getMessage());
 			}
 		}
 	}

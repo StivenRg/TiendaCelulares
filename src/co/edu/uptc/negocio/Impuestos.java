@@ -3,6 +3,7 @@ package co.edu.uptc.negocio;
 import co.edu.uptc.modelo.Venta;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Impuestos{
@@ -16,7 +17,7 @@ public class Impuestos{
 
 	private static void calcularBaseGrabable (){
 		baseGrabableImpuesto5  = 0;
-		baseGrabableImpuesto19 = 19;
+		baseGrabableImpuesto19 = 0;
 		for (Venta locVenta : listaVentas){
 			if (locVenta.getProducto().getPrecio() > 600000){
 				baseGrabableImpuesto19 += locVenta.getProducto().getPrecio();
@@ -48,7 +49,7 @@ public class Impuestos{
 		return tablaImpuestos.toString();
 	}
 
-	public static void mostarTablaImpuestos (){
+	private static String obtenerTablaImpuestos (){
 		StringBuilder tablaImpuestos = new StringBuilder(generarCabecerasTablaImpuestos());
 		calcularBaseGrabable();
 		calcularImpuesto();
@@ -63,6 +64,16 @@ public class Impuestos{
 		String fila3 = "Sumatoria de Totales";
 		tablaImpuestos.append(String.format("%-20s|$%-20.2f|$%-20.2f", fila3, totalBaseGrabable, totalImpuesto));
 
-		JOptionPane.showMessageDialog(null, tablaImpuestos.toString(), "Impuestos", JOptionPane.PLAIN_MESSAGE);
+		return tablaImpuestos.toString();
+	}
+
+	public static void mostarTablaImpuestos (){
+		JTextArea textArea = new JTextArea(obtenerTablaImpuestos());
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
+		JOptionPane.showMessageDialog(null, scrollPane, "Impuestos", JOptionPane.PLAIN_MESSAGE);
 	}
 }

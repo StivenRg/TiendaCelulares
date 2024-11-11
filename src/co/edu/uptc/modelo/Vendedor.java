@@ -12,18 +12,18 @@ public class Vendedor{
 	private        String            tipoID;
 	private        long              numeroCuenta;
 	private        String            tipoCuenta;
-	private final  String            codigoVendedor;
+	private        String            codigoVendedor;
 	private static int               serial         = 1;
 	private final  ArrayList <Venta> ventasVendedor = new ArrayList <>();
 
 	public Vendedor (String paramNombre, long paramNumeroTelefono, long paramNumeroID, String paramTipoID, long paramNumeroCuenta, String paramTipoCuenta){
-		nombre         = paramNombre.toUpperCase();
-		numeroTelefono = paramNumeroTelefono;
-		numeroID       = paramNumeroID;
-		tipoID         = paramTipoID.toUpperCase();
-		numeroCuenta   = paramNumeroCuenta;
-		tipoCuenta     = paramTipoCuenta.toUpperCase();
-		codigoVendedor = "VEN" + serial;
+		this.nombre         = paramNombre.toUpperCase();
+		this.numeroTelefono = paramNumeroTelefono;
+		this.numeroID       = paramNumeroID;
+		this.tipoID         = paramTipoID.toUpperCase();
+		this.numeroCuenta   = paramNumeroCuenta;
+		this.tipoCuenta     = paramTipoCuenta.toUpperCase();
+		this.codigoVendedor = String.format("VEN%d", serial).toUpperCase();
 		serial++;
 	}
 
@@ -84,7 +84,7 @@ public class Vendedor{
 		if (locProducto == null) return;
 
 		if (locProducto.getCantidad() <= paramCantidad){
-			JOptionPane.showMessageDialog(null, "No queda stock suficiente para la venta.", "Stock insuficiente", JOptionPane.INFORMATION_MESSAGE);
+			System.err.println("No queda stock suficiente para la venta: " + paramCodigoProducto + " (" + paramCantidad + ")");
 			return;
 		}
 
@@ -94,7 +94,6 @@ public class Vendedor{
 		venta.setCantidad(paramCantidad);
 		ventasVendedor.add(venta);
 		Inventario.descontarProducto(locProducto, paramCantidad);
-		JOptionPane.showMessageDialog(null, "Venta registrada con exito.", "Venta registrada", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private static Producto obtenerProducto (String paramCodigoProducto){

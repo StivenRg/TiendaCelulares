@@ -1,9 +1,5 @@
 package co.edu.uptc.gui;
 
-import co.edu.uptc.negocio.Impuestos;
-import co.edu.uptc.negocio.MasVendidos;
-import co.edu.uptc.negocio.VentasPorVendedor;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,9 +28,9 @@ public class Evento implements ActionListener{
 			case CARGAR_PERSONAS -> ventana.cargarInfoPersona();
 			case SALIR -> ventana.salir();
 			case STOCK -> ventana.generarInformeInventario();
-			case IMPUESTOS -> Impuestos.mostarTablaImpuestos();
-			case VENTAS -> VentasPorVendedor.mostarTablaVentasPorVendedor();
-			case MAS_VENDIDO -> MasVendidos.mostarTablaMasVendidos();
+			case IMPUESTOS -> ventana.generarInformeImpuestos();
+			case VENTAS -> ventana.generarInformeVentas();
+			case MAS_VENDIDO -> ventana.generarInformeMasVendidos();
 		}
 	}
 }

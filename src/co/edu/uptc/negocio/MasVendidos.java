@@ -4,6 +4,7 @@ import co.edu.uptc.modelo.Producto;
 import co.edu.uptc.modelo.Venta;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,17 +13,23 @@ public class MasVendidos{
 
 	private static HashMap <String, Integer> obtenerVentasPorMarca (){
 		if (listaVentas.isEmpty()) return null;
+
 		HashMap <String, Integer> ventasPorMarca = new HashMap <>();
+
 		for (Venta locVenta : listaVentas){
 			Producto locProducto = locVenta.getProducto();
-			if (locProducto.getCantidad() <= 0) continue;
+
+			if (locVenta.getCantidad() <= 0) continue;
+
 			if (ventasPorMarca.containsKey(locProducto.getMarca())){
 				int cantidad = ventasPorMarca.get(locProducto.getMarca());
-				cantidad += locProducto.getCantidad();
+
+				cantidad += locVenta.getCantidad();
 				ventasPorMarca.put(locProducto.getMarca(), cantidad);
+
 				continue;
 			}
-			ventasPorMarca.put(locProducto.getMarca(), locProducto.getCantidad());
+			ventasPorMarca.put(locProducto.getMarca(), locVenta.getCantidad());
 		}
 		return ventasPorMarca;
 	}
@@ -45,17 +52,23 @@ public class MasVendidos{
 
 	private static HashMap <String, Integer> obtenerVentasPorLinea (){
 		if (listaVentas.isEmpty()) return null;
+
 		HashMap <String, Integer> ventasPorLinea = new HashMap <>();
+
 		for (Venta locVenta : listaVentas){
 			Producto locProducto = locVenta.getProducto();
-			if (locProducto.getCantidad() <= 0) continue;
+
+			if (locVenta.getCantidad() <= 0) continue;
+
 			if (ventasPorLinea.containsKey(locProducto.getLinea())){
 				int cantidad = ventasPorLinea.get(locProducto.getLinea());
-				cantidad += locProducto.getCantidad();
+
+				cantidad += locVenta.getCantidad();
 				ventasPorLinea.put(locProducto.getLinea(), cantidad);
+
 				continue;
 			}
-			ventasPorLinea.put(locProducto.getLinea(), locProducto.getCantidad());
+			ventasPorLinea.put(locProducto.getLinea(), locVenta.getCantidad());
 		}
 		return ventasPorLinea;
 	}
@@ -76,12 +89,11 @@ public class MasVendidos{
 		return new String[] {nombreLineaMasVendida, String.valueOf(cantidadLineaMasVendida)};
 	}
 
-	public static void mostarTablaMasVendidos (){
+	private static String obtenerTablaMasVendidos (){
 		String[] marcaMasVendida = obtenerMarcaMasVendida();
 		String[] lineaMasVendida = obtenerLineaMasVendida();
 		if (marcaMasVendida == null || lineaMasVendida == null){
-			JOptionPane.showMessageDialog(null, "No hay ventas para mostrar.", "No hay ventas", JOptionPane.INFORMATION_MESSAGE);
-			return;
+			return "No hay ventas para mostrar";
 		}
 
 		StringBuilder tablaMasVendidos = new StringBuilder();
@@ -99,6 +111,16 @@ public class MasVendidos{
 		tablaMasVendidos.append(String.format("%-30s | %-15s%n", fila3, lineaMasVendida[0]));
 		tablaMasVendidos.append(String.format("%-30s | %-15s%n", fila4, lineaMasVendida[1]));
 
-		JOptionPane.showMessageDialog(null, tablaMasVendidos.toString(), "Mas ventas", JOptionPane.PLAIN_MESSAGE);
+		return tablaMasVendidos.toString();
+	}
+
+	public static void mostarTablaMasVendidos (){
+		JTextArea textArea = new JTextArea(obtenerTablaMasVendidos());
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
+		JOptionPane.showMessageDialog(null, scrollPane, "Mas ventas", JOptionPane.PLAIN_MESSAGE);
 	}
 }

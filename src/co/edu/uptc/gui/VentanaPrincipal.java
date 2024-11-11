@@ -1,6 +1,9 @@
 package co.edu.uptc.gui;
 
+import co.edu.uptc.negocio.Impuestos;
 import co.edu.uptc.negocio.Inventario;
+import co.edu.uptc.negocio.MasVendidos;
+import co.edu.uptc.negocio.VentasPorVendedor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,13 +38,17 @@ public class VentanaPrincipal extends JFrame{
 
 	public void cargarInfoInventario (){
 		info.obtenerDatos();
-		JOptionPane.showMessageDialog(this, "Productos Agregados al Stock");
+		JOptionPane.showMessageDialog(this, "Guardando Inventario...");
+	}
+
+	public void cargarInfoPersona (){
+		persona.obtenerDatos();
+		JOptionPane.showMessageDialog(this, "Agregando Vendedores...");
 	}
 
 	public void cargarInfoVentas (){
-		//TODO implementar logica para separa información
-		// trae lo que hay en textArea en Stringuma
 		infoVentas.obtenerDatos();
+		JOptionPane.showMessageDialog(this, "Generando Ventas...");
 	}
 
 	public void generarInformeInventario (){
@@ -49,11 +56,22 @@ public class VentanaPrincipal extends JFrame{
 		Inventario.mostrarTablaInventario();
 	}
 
-	public void cargarInfoPersona (){
+	public void generarInformeImpuestos (){
+		JOptionPane.showMessageDialog(this, "Cargando Informe de Impuestos...");
+		Impuestos.mostarTablaImpuestos();
+	}
+
+	public void generarInformeVentas (){
+		JOptionPane.showMessageDialog(this, "Cargando Informe de Ventas...");
+		VentasPorVendedor.mostrarTablaVentasPorVendedor();
+	}
+
+	public void generarInformeMasVendidos (){
+		JOptionPane.showMessageDialog(this, "Cargando Informe de Productos Mas Vendidos...");
+		MasVendidos.mostarTablaMasVendidos();
 	}
 
 	public void salir (){
-		//TODO investigar como cerrar un JFRAME
 		System.exit(0);
 	}
 }
