@@ -9,6 +9,43 @@ import java.util.ArrayList;
 public class VentasPorVendedor{
 	private static final ArrayList <Vendedor> listaVendedores = new ArrayList <>();
 
+	public static void agregarVendedor (Vendedor... paramVendedor){
+		if (paramVendedor.length > 0){
+			listaVendedores.add(paramVendedor[0]);
+			return;
+		}
+
+		Vendedor locVendedor = obtenerVendedor();
+		if (locVendedor == null){
+			return;
+		}
+		for (Vendedor vendedor : listaVendedores){
+			if (locVendedor.getNumeroID() == (vendedor.getNumeroID())){
+				return;
+			}
+		}
+		listaVendedores.add(obtenerVendedor());
+	}
+
+	private static Vendedor obtenerVendedor (){
+		String nombre          = JOptionPane.showInputDialog("Ingrese el nombre completo del vendedor:");
+		String sNumeroTelefono = JOptionPane.showInputDialog("Ingrese el numero de telefono:");
+		String tipoID          = JOptionPane.showInputDialog("Ingrese el tipo de ID:");
+		String sNumeroID       = JOptionPane.showInputDialog("Ingrese el numero de ID:");
+		String tipoCuenta      = JOptionPane.showInputDialog("Ingrese el tipo de cuenta:");
+		String sNumeroCuenta   = JOptionPane.showInputDialog("Ingrese el numero de cuenta:");
+
+		try{
+			long numeroTelefono = Integer.parseInt(sNumeroTelefono);
+			long numeroID       = Integer.parseInt(sNumeroID);
+			long numeroCuenta   = Integer.parseInt(sNumeroCuenta);
+			return new Vendedor(nombre, numeroTelefono, numeroID, tipoID, numeroCuenta, tipoCuenta);
+		} catch (NumberFormatException e){
+			JOptionPane.showMessageDialog(null, "Error en los campos numericos", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
+	}
+
 	private static int obtenerCantidadVentasVendedor (Vendedor paramVendedor){
 		int cantidadVentasVendedor = 0;
 		for (Venta locVenta : paramVendedor.getVentasVendedor()){
@@ -58,5 +95,9 @@ public class VentasPorVendedor{
 			listaVentas.addAll(locVendedor.getVentasVendedor());
 		}
 		return listaVentas;
+	}
+
+	public static ArrayList <Vendedor> getListaVendedores (){
+		return listaVendedores;
 	}
 }

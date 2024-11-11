@@ -34,21 +34,19 @@ public class VentanaPrincipal extends JFrame{
 	}
 
 	public void cargarInfoInventario (){
-		//TODO implementar logica para separa información
-		// trae lo que hay en textArea en String
 		info.obtenerDatos();
 		JOptionPane.showMessageDialog(this, "Productos Agregados al Stock");
 	}
 
 	public void cargarInfoVentas (){
 		//TODO implementar logica para separa información
-		// trae lo que hay en textArea en String
+		// trae lo que hay en textArea en Stringuma
 		infoVentas.obtenerDatos();
 	}
 
 	public void generarInformeInventario (){
 		JOptionPane.showMessageDialog(this, "Cargando Inventario...");
-		Inventario.mostarTablaInventario();
+		Inventario.mostrarTablaInventario();
 	}
 
 	public void cargarInfoPersona (){

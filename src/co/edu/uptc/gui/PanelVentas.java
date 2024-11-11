@@ -1,32 +1,48 @@
 package co.edu.uptc.gui;
 
-import java.awt.BorderLayout;
+import co.edu.uptc.modelo.Vendedor;
+import co.edu.uptc.negocio.VentasPorVendedor;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 
-public class PanelVentas extends JPanel {
-
+public class PanelVentas extends JPanel{
 	private JTextArea txInformacion;
-	
-	public PanelVentas(Evento evento) {
+
+	public PanelVentas (Evento evento){
 		setBorder(new TitledBorder("Linea Texto de Ventas:"));
-		txInformacion= new JTextArea(60,30);
-		
-		JButton accion1= new JButton(Evento.CARGAR_VENTAS);
+		txInformacion = new JTextArea(60, 30);
+
+		JButton accion1 = new JButton(Evento.CARGAR_VENTAS);
 		accion1.addActionListener(evento);
 		accion1.setActionCommand(Evento.CARGAR_VENTAS);
 		setLayout(new BorderLayout());
-		
-		
-		add(txInformacion,BorderLayout.CENTER);
-		add(accion1,BorderLayout.SOUTH);
+
+		add(txInformacion, BorderLayout.CENTER);
+		add(accion1, BorderLayout.SOUTH);
 	}
-	
-	public String obtenerDatos() {
-		return txInformacion.getText();
+
+	public void obtenerDatos (){
+		final String separadorDato   = "\\|";
+		final String separadorLinea  = "\n";
+		String       lineas          = txInformacion.getText();
+		String[]     lineasSeparadas = lineas.split(separadorLinea);
+		for (String locLinea : lineasSeparadas){
+			String[] locDato = locLinea.strip().split(separadorDato);
+			locDato[0] = locDato[0].strip();
+			locDato[1] = locDato[1].strip();
+			locDato[2] = locDato[2].strip();
+
+			for (Vendedor locVendedor : VentasPorVendedor.getListaVendedores()){
+				if (locVendedor.getCodigoVendedor().equals(locDato[0])){
+					locVendedor.agregarVenta(locDato[1], Integer.parseInt(locDato[2]));
+					JOptionPane.showMessageDialog(null, "Venta registrada con exito.", "Venta registrada", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+			}
+
+			JOptionPane.showMessageDialog(null, "No se encontro el vendedor.", "Vendedor no encontrado", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 }

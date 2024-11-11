@@ -6,13 +6,15 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class Vendedor{
-	private       String            nombre;
-	private       long              numeroTelefono;
-	private       long              numeroID;
-	private       String            tipoID;
-	private       long              numeroCuenta;
-	private       String            tipoCuenta;
-	private final ArrayList <Venta> ventasVendedor = new ArrayList <>();
+	private        String            nombre;
+	private        long              numeroTelefono;
+	private        long              numeroID;
+	private        String            tipoID;
+	private        long              numeroCuenta;
+	private        String            tipoCuenta;
+	private final  String            codigoVendedor;
+	private static int               serial         = 1;
+	private final  ArrayList <Venta> ventasVendedor = new ArrayList <>();
 
 	public Vendedor (String paramNombre, long paramNumeroTelefono, long paramNumeroID, String paramTipoID, long paramNumeroCuenta, String paramTipoCuenta){
 		nombre         = paramNombre.toUpperCase();
@@ -21,6 +23,8 @@ public class Vendedor{
 		tipoID         = paramTipoID.toUpperCase();
 		numeroCuenta   = paramNumeroCuenta;
 		tipoCuenta     = paramTipoCuenta.toUpperCase();
+		codigoVendedor = "VEN" + serial;
+		serial++;
 	}
 
 	public String getNombre (){
@@ -85,10 +89,11 @@ public class Vendedor{
 		}
 
 		Venta venta = new Venta();
-		venta.setProducto(locProducto);
-		venta.setCantidad(venta.getCantidad() + paramCantidad);
-		Inventario.descontarProducto(locProducto, paramCantidad);
+		venta.setCodigoVendedor(codigoVendedor);
+		venta.setCodigoProducto(locProducto.getCodigo());
+		venta.setCantidad(paramCantidad);
 		ventasVendedor.add(venta);
+		Inventario.descontarProducto(locProducto, paramCantidad);
 		JOptionPane.showMessageDialog(null, "Venta registrada con exito.", "Venta registrada", JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -100,5 +105,9 @@ public class Vendedor{
 		}
 		JOptionPane.showMessageDialog(null, "Producto no encontrado.", "Producto no encontrado", JOptionPane.INFORMATION_MESSAGE);
 		return null;
+	}
+
+	public String getCodigoVendedor (){
+		return codigoVendedor;
 	}
 }
