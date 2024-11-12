@@ -12,18 +12,18 @@ public class Vendedor{
 	private        String            tipoID;
 	private        long              numeroCuenta;
 	private        String            tipoCuenta;
-	private        String            codigoVendedor;
-	private static int               serial         = 1;
-	private final  ArrayList <Venta> ventasVendedor = new ArrayList <>();
+	private final  String            CODIGO_VENDEDOR;
+	private static int               serial          = 1;
+	private final  ArrayList <Venta> VENTAS_VENDEDOR = new ArrayList <>();
 
 	public Vendedor (String paramNombre, long paramNumeroTelefono, long paramNumeroID, String paramTipoID, long paramNumeroCuenta, String paramTipoCuenta){
-		this.nombre         = paramNombre.toUpperCase();
-		this.numeroTelefono = paramNumeroTelefono;
-		this.numeroID       = paramNumeroID;
-		this.tipoID         = paramTipoID.toUpperCase();
-		this.numeroCuenta   = paramNumeroCuenta;
-		this.tipoCuenta     = paramTipoCuenta.toUpperCase();
-		this.codigoVendedor = String.format("VEN%d", serial).toUpperCase();
+		this.nombre          = paramNombre.toUpperCase();
+		this.numeroTelefono  = paramNumeroTelefono;
+		this.numeroID        = paramNumeroID;
+		this.tipoID          = paramTipoID.toUpperCase();
+		this.numeroCuenta    = paramNumeroCuenta;
+		this.tipoCuenta      = paramTipoCuenta.toUpperCase();
+		this.CODIGO_VENDEDOR = String.format("VEN%d", serial).toUpperCase();
 		serial++;
 	}
 
@@ -76,7 +76,7 @@ public class Vendedor{
 	}
 
 	public ArrayList <Venta> getVentasVendedor (){
-		return ventasVendedor;
+		return VENTAS_VENDEDOR;
 	}
 
 	public void agregarVenta (String paramCodigoProducto, int paramCantidad){
@@ -89,10 +89,10 @@ public class Vendedor{
 		}
 
 		Venta venta = new Venta();
-		venta.setCodigoVendedor(codigoVendedor);
+		venta.setCodigoVendedor(CODIGO_VENDEDOR);
 		venta.setCodigoProducto(locProducto.getCodigo());
 		venta.setCantidad(paramCantidad);
-		ventasVendedor.add(venta);
+		VENTAS_VENDEDOR.add(venta);
 		Inventario.descontarProducto(locProducto, paramCantidad);
 	}
 
@@ -107,6 +107,6 @@ public class Vendedor{
 	}
 
 	public String getCodigoVendedor (){
-		return codigoVendedor;
+		return CODIGO_VENDEDOR;
 	}
 }

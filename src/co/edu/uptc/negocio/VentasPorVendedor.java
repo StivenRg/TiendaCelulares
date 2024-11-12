@@ -8,11 +8,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class VentasPorVendedor{
-	private static final ArrayList <Vendedor> listaVendedores = new ArrayList <>();
+	private static final ArrayList <Vendedor> LISTA_VENDEDORES = new ArrayList <>();
 
 	public static void agregarVendedor (Vendedor... paramVendedor){
 		if (paramVendedor.length > 0){
-			listaVendedores.add(paramVendedor[0]);
+			LISTA_VENDEDORES.add(paramVendedor[0]);
 			return;
 		}
 
@@ -21,12 +21,12 @@ public class VentasPorVendedor{
 			return;
 		}
 
-		for (Vendedor vendedor : listaVendedores){
+		for (Vendedor vendedor : LISTA_VENDEDORES){
 			if (locVendedor.getNumeroID() == (vendedor.getNumeroID())){
 				return;
 			}
 		}
-		listaVendedores.add(obtenerVendedor());
+		LISTA_VENDEDORES.add(obtenerVendedor());
 	}
 
 	private static Vendedor obtenerVendedor (){
@@ -79,7 +79,7 @@ public class VentasPorVendedor{
 	private static String obtenerTablaInventario (){
 		StringBuilder tablaVentasPorVendedor = new StringBuilder(generarCabecerasTablaVentasPorVendedor());
 		int           i                      = 1;
-		for (Vendedor locVendedor : listaVendedores){
+		for (Vendedor locVendedor : LISTA_VENDEDORES){
 			String ID             = locVendedor.getTipoID() + " " + locVendedor.getNumeroID();
 			String nombre         = locVendedor.getNombre();
 			double totalComision  = calcularTotalComisionVendedor(locVendedor);
@@ -104,13 +104,13 @@ public class VentasPorVendedor{
 
 	public static ArrayList <Venta> getListaVentas (){
 		ArrayList <Venta> listaVentas = new ArrayList <>();
-		for (Vendedor locVendedor : listaVendedores){
+		for (Vendedor locVendedor : LISTA_VENDEDORES){
 			listaVentas.addAll(locVendedor.getVentasVendedor());
 		}
 		return listaVentas;
 	}
 
 	public static ArrayList <Vendedor> getListaVendedores (){
-		return listaVendedores;
+		return LISTA_VENDEDORES;
 	}
 }

@@ -13,12 +13,12 @@ public class Impuestos{
 	private static       double            impuesto19;
 	private static       double            totalBaseGrabable;
 	private static       double            totalImpuesto;
-	private static final ArrayList <Venta> listaVentas = VentasPorVendedor.getListaVentas();
+	private static final ArrayList <Venta> LISTA_VENTAS = VentasPorVendedor.getListaVentas();
 
 	private static void calcularBaseGrabable (){
 		baseGrabableImpuesto5  = 0;
 		baseGrabableImpuesto19 = 0;
-		for (Venta locVenta : listaVentas){
+		for (Venta locVenta : LISTA_VENTAS){
 			if (locVenta.getProducto().getPrecio() > 600000){
 				baseGrabableImpuesto19 += locVenta.getProducto().getPrecio();
 			} else{
