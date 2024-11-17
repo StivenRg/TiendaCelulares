@@ -1,7 +1,8 @@
 package co.edu.uptc.gui;
 
+import co.edu.uptc.dto.ReporteStockDTO;
+import co.edu.uptc.modelo.Tienda;
 import co.edu.uptc.negocio.Impuestos;
-import co.edu.uptc.negocio.Inventario;
 import co.edu.uptc.negocio.MasVendidos;
 import co.edu.uptc.negocio.VentasPorVendedor;
 
@@ -13,6 +14,7 @@ public class VentanaPrincipal extends JFrame{
 	private PanelVentas     infoVentas;
 	private PanelBotones    botones;
 	private PanelPersona    persona;
+	private Tienda          tienda;
 
 	public VentanaPrincipal (){
 		setTitle("Mi Tienda");
@@ -23,6 +25,7 @@ public class VentanaPrincipal extends JFrame{
 		infoVentas = new PanelVentas(evento);
 		botones    = new PanelBotones(evento);
 		persona    = new PanelPersona(evento);
+		tienda     = new Tienda();
 
 		setLayout(new BorderLayout());
 		add(info, BorderLayout.WEST);
@@ -37,8 +40,9 @@ public class VentanaPrincipal extends JFrame{
 	}
 
 	public void cargarInfoInventario (){
-		info.obtenerDatos();
-		JOptionPane.showMessageDialog(this, "Guardando Inventario...");
+		String[] datos = info.obtenerDatos();
+		tienda.agregarProductos(datos);
+		JOptionPane.showMessageDialog(null, "Guardando Inventario...");
 	}
 
 	public void cargarInfoPersona (){
@@ -53,7 +57,14 @@ public class VentanaPrincipal extends JFrame{
 
 	public void generarInformeInventario (){
 		JOptionPane.showMessageDialog(this, "Cargando Inventario...");
-		Inventario.mostrarTablaInventario();
+		ReporteStockDTO reporteStock = new ReporteStockDTO();
+		JTextArea       textArea     = new JTextArea(reporteStock.obtenerTablaInventario(tienda.getProductos()));
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
+		JOptionPane.showMessageDialog(null, scrollPane, "Inventario", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public void generarInformeImpuestos (){

@@ -1,8 +1,5 @@
 package co.edu.uptc.gui;
 
-import co.edu.uptc.modelo.Producto;
-import co.edu.uptc.negocio.Inventario;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -23,26 +20,9 @@ public class PanelInventario extends JPanel{
 		add(accion1, BorderLayout.SOUTH);
 	}
 
-	public void obtenerDatos (){
-		final String separadorDato   = "\\|";
-		final String separadorLinea  = "\n";
-		String       lineas          = txInformacion.getText();
-		String[]     lineasSeparadas = lineas.split(separadorLinea);
-		for (String locLinea : lineasSeparadas){
-			String[] locDato = locLinea.strip().split(separadorDato);
-			try{
-				locDato[0] = locDato[0].strip();
-				locDato[1] = locDato[1].strip();
-				locDato[2] = locDato[2].strip();
-				locDato[3] = locDato[3].strip();
-				locDato[4] = locDato[4].strip();
-			} catch (ArrayIndexOutOfBoundsException e){
-				System.err.println("Error en el formato de inventario" + locLinea);
-				return;
-			}
-
-			Producto producto = new Producto(locDato[0], locDato[1], locDato[2], Double.parseDouble(locDato[3]), Integer.parseInt(locDato[4]));
-			Inventario.agregarProducto(producto);
-		}
+	public String[] obtenerDatos (){
+		final String separadorLinea = "\n";
+		String       lineas         = txInformacion.getText();
+		return lineas.split(separadorLinea);
 	}
 }

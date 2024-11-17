@@ -109,4 +109,20 @@ public class Vendedor{
 	public String getCodigoVendedor (){
 		return CODIGO_VENDEDOR;
 	}
+
+	public double getTotalComision (){
+		double totalComision = 0;
+		for (Venta locVenta : VENTAS_VENDEDOR){
+			totalComision += locVenta.getProducto().getPrecio() * locVenta.getCantidad() * 0.05;
+		}
+		return totalComision;
+	}
+
+	public int getCantidadCelularesVendidos (){
+		int cantidadCelularesVendidos = 0;
+		for (Venta locVenta : VENTAS_VENDEDOR){
+			cantidadCelularesVendidos += locVenta.getCantidad();
+		}
+		return cantidadCelularesVendidos;
+	}
 }
