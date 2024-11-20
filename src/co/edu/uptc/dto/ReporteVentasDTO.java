@@ -27,7 +27,7 @@ public class ReporteVentasDTO{
 		return tablaVentasPorVendedor.toString();
 	}
 
-	public String obtenerTablaInventario (ArrayList <Vendedor> vendedores){
+	public String obtenerTablaVentas (ArrayList <Vendedor> vendedores){
 		StringBuilder tablaVentasPorVendedor = new StringBuilder(generarCabecerasTablaVentasPorVendedor());
 		int           i                      = 1;
 		for (Vendedor locVendedor : vendedores){

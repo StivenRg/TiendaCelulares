@@ -1,8 +1,5 @@
 package co.edu.uptc.gui;
 
-import co.edu.uptc.modelo.Vendedor;
-import co.edu.uptc.negocio.VentasPorVendedor;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -23,28 +20,9 @@ public class PanelVentas extends JPanel{
 		add(accion1, BorderLayout.SOUTH);
 	}
 
-	public void obtenerDatos (){
-		final String separadorDato   = "\\|";
-		final String separadorLinea  = "\n";
-		String       lineas          = txInformacion.getText();
-		String[]     lineasSeparadas = lineas.split(separadorLinea);
-		for (String locLinea : lineasSeparadas){
-			String[] locDato = locLinea.strip().split(separadorDato);
-			try{
-				locDato[0] = locDato[0].strip();
-				locDato[1] = locDato[1].strip();
-				locDato[2] = locDato[2].strip();
-			} catch (ArrayIndexOutOfBoundsException e){
-				System.err.println("Venta no válida: " + locLinea);
-				continue;
-			}
-
-			for (Vendedor locVendedor : VentasPorVendedor.getListaVendedores()){
-				if (locVendedor.getCodigoVendedor().equals(locDato[0])){
-					locVendedor.agregarVenta(locDato[1], Integer.parseInt(locDato[2]));
-					break;
-				}
-			}
-		}
+	public String[] obtenerDatos (){
+		final String separadorLinea = "\n";
+		String       lineas         = txInformacion.getText();
+		return lineas.split(separadorLinea);
 	}
 }

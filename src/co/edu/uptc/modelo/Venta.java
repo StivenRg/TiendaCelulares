@@ -7,6 +7,12 @@ public class Venta{
 	private String codigoVendedor;
 	private int    cantidad;
 
+	public Venta (String paramCodigoProducto, String paramCodigoVendedor, int paramCantidad){
+		codigoProducto = paramCodigoProducto;
+		codigoVendedor = paramCodigoVendedor;
+		cantidad       = paramCantidad;
+	}
+
 	public Venta (){
 	}
 

@@ -5,7 +5,6 @@ import co.edu.uptc.dto.ReporteVentasDTO;
 import co.edu.uptc.modelo.Tienda;
 import co.edu.uptc.negocio.Impuestos;
 import co.edu.uptc.negocio.MasVendidos;
-import co.edu.uptc.negocio.VentasPorVendedor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,8 +52,9 @@ public class VentanaPrincipal extends JFrame{
 	}
 
 	public void cargarInfoVentas (){
-		infoVentas.obtenerDatos();
-		JOptionPane.showMessageDialog(this, "Generando Ventas...");
+		String[] datosVentas = infoVentas.obtenerDatos();
+		tienda.agregarVenta(datosVentas);
+		JOptionPane.showMessageDialog(this, "Efectuando ventas...");
 	}
 
 	public void generarInformeInventario (){
@@ -77,7 +77,7 @@ public class VentanaPrincipal extends JFrame{
 	public void generarInformeVentas (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Ventas...");
 		ReporteVentasDTO locReporteVentasDTO = new ReporteVentasDTO();
-		JTextArea        textArea            = new JTextArea(locReporteVentasDTO.obtenerTablaInventario(tienda.getVendedores()));
+		JTextArea        textArea            = new JTextArea(locReporteVentasDTO.obtenerTablaVentas(tienda.getVendedores()));
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		textArea.setEditable(false);
 

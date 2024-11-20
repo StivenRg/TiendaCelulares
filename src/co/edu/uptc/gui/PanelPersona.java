@@ -1,8 +1,5 @@
 package co.edu.uptc.gui;
 
-import co.edu.uptc.modelo.Vendedor;
-import co.edu.uptc.negocio.VentasPorVendedor;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -11,7 +8,7 @@ public class PanelPersona extends JPanel{
 	private JTextArea txInformacion;
 
 	public PanelPersona (Evento evento){
-		setBorder(new TitledBorder("Linea Texto de Personas:"));
+		setBorder(new TitledBorder("Línea Texto de Personas:"));
 		txInformacion = new JTextArea(60, 30);
 
 		JButton accion1 = new JButton(Evento.CARGAR_PERSONAS);
