@@ -42,14 +42,4 @@ public class ReporteVentasDTO{
 		}
 		return tablaVentasPorVendedor.toString();
 	}
-
-	//	public void mostrarTablaVentasPorVendedor (){
-	//		JTextArea textArea = new JTextArea(obtenerTablaInventario());
-	//		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-	//		textArea.setEditable(false);
-	//
-	//		JScrollPane scrollPane = new JScrollPane(textArea);
-	//
-	//		JOptionPane.showMessageDialog(null, scrollPane, "Ventas", JOptionPane.PLAIN_MESSAGE);
-	//	}
 }

@@ -23,35 +23,9 @@ public class PanelPersona extends JPanel{
 		add(accion1, BorderLayout.SOUTH);
 	}
 
-	public void obtenerDatos (){
-		final String separadorDato   = "\\|";
-		final String separadorLinea  = "\n";
-		String       lineas          = txInformacion.getText();
-		String[]     lineasSeparadas = lineas.split(separadorLinea);
-		for (String locLinea : lineasSeparadas){
-			String[] locDato = locLinea.strip().split(separadorDato);
-			String   nombre, sNumeroTelefono, tipoID, sNumeroID, tipoCuenta, sNumeroCuenta;
-			try{
-				nombre          = locDato[0].strip();
-				sNumeroTelefono = locDato[1].strip();
-				sNumeroID       = locDato[2].strip();
-				tipoID          = locDato[3].strip();
-				sNumeroCuenta   = locDato[4].strip();
-				tipoCuenta      = locDato[5].strip();
-			} catch (ArrayIndexOutOfBoundsException e){
-				System.err.println("Persona no válida: " + locLinea);
-				continue;
-			}
-
-			try{
-				long     numeroTelefono = Long.parseLong(sNumeroTelefono);
-				long     numeroID       = Long.parseLong(sNumeroID);
-				long     numeroCuenta   = Long.parseLong(sNumeroCuenta);
-				Vendedor vendedor       = new Vendedor(nombre, numeroTelefono, numeroID, tipoID, numeroCuenta, tipoCuenta);
-				VentasPorVendedor.agregarVendedor(vendedor);
-			} catch (NumberFormatException e){
-				System.err.println("Error en dato numerico: " + e.getMessage());
-			}
-		}
+	public String[] obtenerDatos (){
+		final String separadorLinea = "\n";
+		String       lineas         = txInformacion.getText();
+		return lineas.split(separadorLinea);
 	}
 }

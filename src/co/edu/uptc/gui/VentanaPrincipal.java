@@ -1,6 +1,7 @@
 package co.edu.uptc.gui;
 
 import co.edu.uptc.dto.ReporteStockDTO;
+import co.edu.uptc.dto.ReporteVentasDTO;
 import co.edu.uptc.modelo.Tienda;
 import co.edu.uptc.negocio.Impuestos;
 import co.edu.uptc.negocio.MasVendidos;
@@ -40,13 +41,14 @@ public class VentanaPrincipal extends JFrame{
 	}
 
 	public void cargarInfoInventario (){
-		String[] datos = info.obtenerDatos();
-		tienda.agregarProductos(datos);
+		String[] datosProductos = info.obtenerDatos();
+		tienda.agregarProductos(datosProductos);
 		JOptionPane.showMessageDialog(null, "Guardando Inventario...");
 	}
 
 	public void cargarInfoPersona (){
-		persona.obtenerDatos();
+		String[] datosPersonas = persona.obtenerDatos();
+		tienda.agregarVendedor(datosPersonas);
 		JOptionPane.showMessageDialog(this, "Agregando Vendedores...");
 	}
 
@@ -74,7 +76,14 @@ public class VentanaPrincipal extends JFrame{
 
 	public void generarInformeVentas (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Ventas...");
-		VentasPorVendedor.mostrarTablaVentasPorVendedor();
+		ReporteVentasDTO locReporteVentasDTO = new ReporteVentasDTO();
+		JTextArea        textArea            = new JTextArea(locReporteVentasDTO.obtenerTablaInventario(tienda.getVendedores()));
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
+		JOptionPane.showMessageDialog(null, scrollPane, "Ventas", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public void generarInformeMasVendidos (){
