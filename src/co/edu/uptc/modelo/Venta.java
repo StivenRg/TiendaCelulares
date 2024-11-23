@@ -1,19 +1,21 @@
 package co.edu.uptc.modelo;
 
-import co.edu.uptc.negocio.Inventario;
-
 public class Venta{
-	private String codigoProducto;
 	private String codigoVendedor;
+	private String codigoProducto;
 	private int    cantidad;
 
-	public Venta (String paramCodigoProducto, String paramCodigoVendedor, int paramCantidad){
-		codigoProducto = paramCodigoProducto;
-		codigoVendedor = paramCodigoVendedor;
+	public Venta (String paramCodigoVendedor, String paramCodigoProducto, int paramCantidad){
+		codigoVendedor = paramCodigoVendedor.toUpperCase();
+		codigoProducto = paramCodigoProducto.toUpperCase();
 		cantidad       = paramCantidad;
 	}
 
 	public Venta (){
+	}
+
+	public String getCodigoProducto (){
+		return codigoProducto;
 	}
 
 	public void setCodigoProducto (String paramCodigoProducto){
@@ -28,24 +30,11 @@ public class Venta{
 		codigoVendedor = paramCodigoVendedor.toUpperCase();
 	}
 
-	public String getCodigoProducto (){
-		return codigoProducto;
-	}
-
-	public void setCantidad (int paramCantidad){
-		cantidad = paramCantidad;
-	}
-
 	public int getCantidad (){
 		return cantidad;
 	}
 
-	public Producto getProducto (){
-		for (Producto locProducto : Inventario.getProductos()){
-			if (locProducto.getCodigo().equals(codigoProducto)){
-				return locProducto;
-			}
-		}
-		return null;
+	public void setCantidad (int paramCantidad){
+		cantidad = paramCantidad;
 	}
 }

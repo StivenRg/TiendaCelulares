@@ -40,7 +40,7 @@ public class ReporteStockDTO{
 			double impuesto       = calcularPorcentajeImpuesto(locProducto.getPrecio()) * cantidad;
 			double precioVenta    = precioBase + impuesto;
 			double comision       = precioBase * 0.05;
-			double ganancia       = precioBase - comision;
+			double ganancia       = precioBase * 0.35;
 
 			totalCelulares += cantidad;
 			totalPrecioBase += precioBase;

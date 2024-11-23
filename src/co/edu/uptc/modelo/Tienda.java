@@ -27,7 +27,7 @@ public class Tienda{
 					continue;
 				}
 
-				Producto productoDuplicado = validarProductoExistente(producto.getCodigo());
+				Producto productoDuplicado = obtenerProducto(producto.getCodigo());
 				if (productoDuplicado != null){
 					productoDuplicado.setCantidad(productoDuplicado.getCantidad() + producto.getCantidad());
 					continue;
@@ -40,15 +40,8 @@ public class Tienda{
 	}
 
 	private void descontarProducto (String paramCodigoProducto, int paramCantidad){
-		Producto producto = validarProductoExistente(paramCodigoProducto);
-		if (producto == null){
-			System.err.println("Producto no existe: " + paramCodigoProducto);
-			return;
-		}
-		if (producto.getCantidad() < paramCantidad){
-			System.err.println("Producto con stock insuficiente: " + paramCodigoProducto);
-			return;
-		}
+		Producto producto = obtenerProducto(paramCodigoProducto);
+		if (producto == null) return;
 		producto.setCantidad(producto.getCantidad() - paramCantidad);
 	}
 
@@ -71,7 +64,7 @@ public class Tienda{
 		return true;
 	}
 
-	private Producto validarProductoExistente (String paramCodigoProducto){
+	private Producto obtenerProducto (String paramCodigoProducto){
 		for (Producto locProducto : productos){
 			if (paramCodigoProducto.equalsIgnoreCase(locProducto.getCodigo())){
 				return locProducto;
@@ -84,72 +77,13 @@ public class Tienda{
 		return productos;
 	}
 
-	public void agregarVenta (String[] paramDatos){
-		final String separadorDato = "\\|";
-		for (String locLinea : paramDatos){
-			String[] locDato = locLinea.strip().split(separadorDato);
-			String   codigoVendedor, codigoProducto, sCantidad;
-			try{
-				codigoVendedor = locDato[0].strip();
-				codigoProducto = locDato[1].strip();
-				sCantidad      = locDato[2].strip();
-			} catch (ArrayIndexOutOfBoundsException e){
-				System.err.println("Venta no válida: " + locLinea);
-				continue;
-			}
-
-			try{
-				int   cantidad = Integer.parseInt(sCantidad);
-				Venta venta    = new Venta(codigoVendedor, codigoProducto, cantidad);
-				if (validarVenta(cantidad, codigoProducto)){
-					descontarProducto(codigoProducto, cantidad);
-					agregarVentaVendedor(codigoVendedor, venta);
-					ventas.add(venta);
-				}
-			} catch (NumberFormatException e){
-				System.err.println("Error en venta: " + locLinea);
-			}
-		}
-	}
-
-	private void agregarVentaVendedor (String paramCodigoVendedor, Venta paramVenta){
-		Vendedor vendedor = validarVendedorExistente(paramCodigoVendedor);
-		if (vendedor == null){
-			System.err.println("Vendedor no existe: " + paramCodigoVendedor);
-			return;
-		}
-		String codigoProducto = paramVenta.getCodigoProducto();
-		int    cantidad       = paramVenta.getCantidad();
-		vendedor.agregarVenta(codigoProducto, cantidad);
-	}
-
-	private Vendedor validarVendedorExistente (String paramCodigoVendedor){
+	private Vendedor obtenerVendedor (String paramCodigoVendedor){
 		for (Vendedor locVendedor : vendedores){
 			if (paramCodigoVendedor.equalsIgnoreCase(locVendedor.getCodigoVendedor())){
 				return locVendedor;
 			}
 		}
 		return null;
-	}
-
-	private boolean validarVenta (int cantidad, String codigoProducto){
-		if (cantidad < 1){
-			return false;
-		}
-		Producto producto = validarProductoExistente(codigoProducto);
-		if (producto == null){
-			System.err.println("Producto no existe: " + codigoProducto);
-			return false;
-		}
-		if (producto.getCantidad() < cantidad){
-			System.err.println("Producto con stock insuficiente: " + codigoProducto);
-			return false;
-		}
-		return true;
-	}
-
-	public ArrayList <Venta> getVentas (){
-		return ventas;
 	}
 
 	public void agregarVendedor (String[] paramDatos){
@@ -206,5 +140,65 @@ public class Tienda{
 
 	public ArrayList <Vendedor> getVendedores (){
 		return vendedores;
+	}
+
+	public void agregarVenta (String[] paramDatos){
+		final String separadorDato = "\\|";
+		for (String locLinea : paramDatos){
+			String[] locDato = locLinea.strip().split(separadorDato);
+			String   codigoVendedor, codigoProducto, sCantidad;
+			try{
+				codigoVendedor = locDato[0].strip();
+				codigoProducto = locDato[1].strip();
+				sCantidad      = locDato[2].strip();
+			} catch (ArrayIndexOutOfBoundsException e){
+				System.err.println("Venta no válida: " + locLinea);
+				continue;
+			}
+
+			try{
+				int cantidad = Integer.parseInt(sCantidad);
+				if (validarVenta(codigoVendedor, codigoProducto, cantidad)){
+					descontarProducto(codigoProducto, cantidad);
+					Venta venta = new Venta(codigoVendedor, codigoProducto, cantidad);
+					agregarVentaVendedor(codigoVendedor, venta);
+					ventas.add(venta);
+				}
+			} catch (NumberFormatException e){
+				System.err.println("Error en venta: " + locLinea);
+			}
+		}
+	}
+
+	private void agregarVentaVendedor (String paramCodigoVendedor, Venta paramVenta){
+		Vendedor vendedor = obtenerVendedor(paramCodigoVendedor);
+		if (vendedor == null){
+			System.err.println("Vendedor no existe: " + paramCodigoVendedor);
+			return;
+		}
+		String codigoProducto = paramVenta.getCodigoProducto();
+		int    cantidad       = paramVenta.getCantidad();
+		vendedor.agregarVenta(codigoProducto, cantidad);
+	}
+
+	private boolean validarVenta (String codigoVendedor, String codigoProducto, int cantidad){
+		if (cantidad < 1){
+			return false;
+		}
+
+		Producto producto = obtenerProducto(codigoProducto);
+		Vendedor vendedor = obtenerVendedor(codigoVendedor);
+
+		if (producto == null || vendedor == null) return false;
+
+		if (producto.getCantidad() < cantidad){
+			System.err.printf("Producto con stock insuficiente: %s : %d%n", codigoProducto, cantidad);
+			return false;
+		}
+		return true;
+	}
+
+	public ArrayList <Venta> getVentas (){
+		return ventas;
 	}
 }

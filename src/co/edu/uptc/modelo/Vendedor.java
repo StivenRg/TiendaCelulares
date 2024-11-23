@@ -1,8 +1,5 @@
 package co.edu.uptc.modelo;
 
-import co.edu.uptc.negocio.Inventario;
-
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class Vendedor{
@@ -12,18 +9,20 @@ public class Vendedor{
 	private        String            tipoID;
 	private        long              numeroCuenta;
 	private        String            tipoCuenta;
-	private final  String            CODIGO_VENDEDOR;
-	private static int               serial          = 1;
-	private final  ArrayList <Venta> VENTAS_VENDEDOR = new ArrayList <>();
+	private        String            codigoVendedor;
+	private static int               serial         = 1;
+	private        ArrayList <Venta> ventasVendedor = new ArrayList <>();
 
 	public Vendedor (String paramNombre, long paramNumeroTelefono, long paramNumeroID, String paramTipoID, long paramNumeroCuenta, String paramTipoCuenta){
-		this.nombre          = paramNombre.toUpperCase();
-		this.numeroTelefono  = paramNumeroTelefono;
-		this.numeroID        = paramNumeroID;
-		this.tipoID          = paramTipoID.toUpperCase();
-		this.numeroCuenta    = paramNumeroCuenta;
-		this.tipoCuenta      = paramTipoCuenta.toUpperCase();
-		this.CODIGO_VENDEDOR = String.format("VEN%d", serial).toUpperCase();
+		this.nombre         = paramNombre.toUpperCase();
+		this.numeroTelefono = paramNumeroTelefono;
+		this.numeroID       = paramNumeroID;
+		this.tipoID         = paramTipoID.toUpperCase();
+		this.numeroCuenta   = paramNumeroCuenta;
+		this.tipoCuenta     = paramTipoCuenta.toUpperCase();
+		//Se genera el codigo del vendedor
+		this.codigoVendedor = String.format("VEN%d", serial).toUpperCase();
+		//Incrementa el número de vendedor
 		serial++;
 	}
 
@@ -75,54 +74,16 @@ public class Vendedor{
 		tipoCuenta = paramTipoCuenta.toUpperCase();
 	}
 
-	public ArrayList <Venta> getVentasVendedor (){
-		return VENTAS_VENDEDOR;
+	public String getCodigoVendedor (){
+		return codigoVendedor;
 	}
 
 	public void agregarVenta (String paramCodigoProducto, int paramCantidad){
-		Producto locProducto = obtenerProducto(paramCodigoProducto);
-		if (locProducto == null) return;
-
-		if (locProducto.getCantidad() <= paramCantidad){
-			System.err.println("No queda stock suficiente para la venta: " + paramCodigoProducto + " (" + paramCantidad + ")");
-			return;
-		}
-
-		Venta venta = new Venta();
-		venta.setCodigoVendedor(CODIGO_VENDEDOR);
-		venta.setCodigoProducto(locProducto.getCodigo());
-		venta.setCantidad(paramCantidad);
-		VENTAS_VENDEDOR.add(venta);
-		Inventario.descontarProducto(locProducto, paramCantidad);
+		Venta venta = new Venta(codigoVendedor, paramCodigoProducto, paramCantidad);
+		ventasVendedor.add(venta);
 	}
 
-	private static Producto obtenerProducto (String paramCodigoProducto){
-		for (Producto locProducto : Inventario.getProductos()){
-			if (locProducto.getCodigo().equals(paramCodigoProducto)){
-				return locProducto;
-			}
-		}
-		JOptionPane.showMessageDialog(null, "Producto no encontrado.", "Producto no encontrado", JOptionPane.INFORMATION_MESSAGE);
-		return null;
-	}
-
-	public String getCodigoVendedor (){
-		return CODIGO_VENDEDOR;
-	}
-
-	public double getTotalComision (){
-		double totalComision = 0;
-		for (Venta locVenta : VENTAS_VENDEDOR){
-			totalComision += locVenta.getProducto().getPrecio() * locVenta.getCantidad() * 0.05;
-		}
-		return totalComision;
-	}
-
-	public int getCantidadCelularesVendidos (){
-		int cantidadCelularesVendidos = 0;
-		for (Venta locVenta : VENTAS_VENDEDOR){
-			cantidadCelularesVendidos += locVenta.getCantidad();
-		}
-		return cantidadCelularesVendidos;
+	public ArrayList <Venta> getVentasVendedor (){
+		return ventasVendedor;
 	}
 }

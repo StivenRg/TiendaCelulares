@@ -1,10 +1,10 @@
 package co.edu.uptc.gui;
 
+import co.edu.uptc.dto.ReporteImpuestosDTO;
+import co.edu.uptc.dto.ReporteMasVendidosDTO;
 import co.edu.uptc.dto.ReporteStockDTO;
 import co.edu.uptc.dto.ReporteVentasDTO;
 import co.edu.uptc.modelo.Tienda;
-import co.edu.uptc.negocio.Impuestos;
-import co.edu.uptc.negocio.MasVendidos;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,12 +71,19 @@ public class VentanaPrincipal extends JFrame{
 
 	public void generarInformeImpuestos (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Impuestos...");
-		Impuestos.mostarTablaImpuestos();
+		ReporteImpuestosDTO locReporteImpuestosDTO = new ReporteImpuestosDTO(tienda.getVentas(), tienda.getProductos());
+		JTextArea           textArea               = new JTextArea(locReporteImpuestosDTO.obtenerTablaImpuestos());
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
+		JOptionPane.showMessageDialog(null, scrollPane, "Impuestos", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public void generarInformeVentas (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Ventas...");
-		ReporteVentasDTO locReporteVentasDTO = new ReporteVentasDTO();
+		ReporteVentasDTO locReporteVentasDTO = new ReporteVentasDTO(tienda.getProductos());
 		JTextArea        textArea            = new JTextArea(locReporteVentasDTO.obtenerTablaVentas(tienda.getVendedores()));
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		textArea.setEditable(false);
@@ -88,7 +95,14 @@ public class VentanaPrincipal extends JFrame{
 
 	public void generarInformeMasVendidos (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Productos Mas Vendidos...");
-		MasVendidos.mostarTablaMasVendidos();
+		ReporteMasVendidosDTO locReporteMasVendidosDTO = new ReporteMasVendidosDTO(tienda.getVentas(), tienda.getProductos());
+		JTextArea             textArea                 = new JTextArea(locReporteMasVendidosDTO.obtenerTablaMasVendidos());
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
+		JOptionPane.showMessageDialog(null, scrollPane, "Mas ventas", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public void salir (){

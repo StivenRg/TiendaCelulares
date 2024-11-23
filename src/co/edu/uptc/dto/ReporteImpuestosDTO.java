@@ -1,4 +1,99 @@
 package co.edu.uptc.dto;
 
+import co.edu.uptc.modelo.Producto;
+import co.edu.uptc.modelo.Venta;
+
+import java.util.ArrayList;
+
 public class ReporteImpuestosDTO{
+	double baseGrabableImpuesto5  = 0;
+	double baseGrabableImpuesto19 = 0;
+	double impuesto5              = 0;
+	double impuesto19             = 0;
+	double totalBaseGrabable      = 0;
+	double totalImpuesto          = 0;
+	private ArrayList <Venta>    listaVentas;
+	private ArrayList <Producto> listaProductos;
+	private ArrayList <Producto> listaProductosVendidos;
+
+	public ReporteImpuestosDTO (ArrayList <Venta> paramListaVentas, ArrayList <Producto> paramListaProductos){
+		listaVentas    = paramListaVentas;
+		listaProductos = paramListaProductos;
+	}
+
+	private void agregarProductos (){
+		listaProductosVendidos = new ArrayList <>();
+		for (Venta locVenta : listaVentas){
+			String   locCodigoProducto = locVenta.getCodigoProducto();
+			Producto locProducto       = obtenerProducto(locCodigoProducto);
+
+			if (locProducto == null){
+				Producto producto = obtenerDatosProducto(locCodigoProducto);
+				if (producto == null) continue;
+				producto.setCantidad(locVenta.getCantidad());
+				listaProductosVendidos.add(producto);
+			} else{
+				locProducto.setCantidad(locProducto.getCantidad() + locVenta.getCantidad());
+			}
+		}
+	}
+
+	private Producto obtenerProducto (String paramCodigoProducto){
+		for (Producto locProducto : listaProductosVendidos){
+			if (locProducto.getCodigo().equals(paramCodigoProducto)){
+				return locProducto;
+			}
+		}
+		return null;
+	}
+
+	private Producto obtenerDatosProducto (String paramCodigoProducto){
+		for (Producto locProducto : listaProductos){
+			if (locProducto.getCodigo().equals(paramCodigoProducto)){
+				return locProducto;
+			}
+		}
+		return null;
+	}
+
+	private String generarCabecerasTablaImpuestos (){
+		StringBuilder tablaImpuestos = new StringBuilder();
+		String        columna0       = "Impuesto";
+		String        columna1       = "Total bases grabables";
+		String        columna2       = "Total impuesto";
+		tablaImpuestos.append(String.format("%-20s|%-20s|%-20s%n", columna0, columna1, columna2));
+		return tablaImpuestos.toString();
+	}
+
+	private void calcularImpuestos (){
+		agregarProductos();
+		baseGrabableImpuesto5  = 0;
+		baseGrabableImpuesto19 = 0;
+		for (Producto locProducto : listaProductosVendidos){
+			if (locProducto.getPrecio() > 600000){
+				baseGrabableImpuesto19 += locProducto.getPrecio() * locProducto.getCantidad();
+			} else{
+				baseGrabableImpuesto5 += locProducto.getPrecio() * locProducto.getCantidad();
+			}
+		}
+		impuesto5         = baseGrabableImpuesto5 * 0.05;
+		impuesto19        = baseGrabableImpuesto19 * 0.19;
+		totalBaseGrabable = baseGrabableImpuesto5 + baseGrabableImpuesto19;
+		totalImpuesto     = impuesto5 + impuesto19;
+	}
+
+	public String obtenerTablaImpuestos (){
+		StringBuilder tablaImpuestos = new StringBuilder(generarCabecerasTablaImpuestos());
+		calcularImpuestos();
+
+		String fila1 = "Impuesto 5%";
+		String fila2 = "Impuesto 19%";
+		tablaImpuestos.append(String.format("%-20s|$%,20.2f|$%,20.2f%n", fila1, baseGrabableImpuesto5, impuesto5));
+		tablaImpuestos.append(String.format("%-20s|$%,20.2f|$%,20.2f%n", fila2, baseGrabableImpuesto19, impuesto19));
+
+		String fila3 = "Sumatoria de Totales";
+		tablaImpuestos.append(String.format("%-20s|$%,20.2f|$%,20.2f", fila3, totalBaseGrabable, totalImpuesto));
+
+		return tablaImpuestos.toString();
+	}
 }
