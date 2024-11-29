@@ -55,7 +55,7 @@ public class Tienda{
 		if (paramProducto.getCodigo().isBlank()){
 			return false;
 		}
-		if (paramProducto.getPrecio() < 200000){
+		if (paramProducto.getPrecio() < 0){
 			return false;
 		}
 		if (paramProducto.getCantidad() < 1){

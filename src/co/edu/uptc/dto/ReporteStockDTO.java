@@ -34,16 +34,21 @@ public class ReporteStockDTO{
 		totalPrecioBase = totalPrecioVenta = totalImpuesto = totalComision = totalGanancia = 0;
 
 		for (Producto locProducto : productos){
+			final double porcentajeConGanancia = 1.25;
+			final double porcentajeComision    = 0.05;
+
 			String codigoProducto = locProducto.getCodigo();
 			int    cantidad       = locProducto.getCantidad();
-			double precioBase     = locProducto.getPrecio() * cantidad;
-			double impuesto       = calcularPorcentajeImpuesto(locProducto.getPrecio()) * cantidad;
-			double precioVenta    = precioBase + impuesto;
-			double comision       = precioBase * 0.05;
-			double ganancia       = precioBase * 0.35;
+			double invertido      = locProducto.getPrecio() * cantidad;
+
+			double precioBaseConGanancia = locProducto.getPrecio() * porcentajeConGanancia * cantidad;
+			double impuesto              = calcularPorcentajeImpuesto(locProducto.getPrecio() * porcentajeConGanancia) * cantidad;
+			double precioVenta           = (precioBaseConGanancia + impuesto);
+			double comision              = locProducto.getPrecio() * porcentajeComision * cantidad;
+			double ganancia              = precioBaseConGanancia - invertido - comision;
 
 			totalCelulares += cantidad;
-			totalPrecioBase += precioBase;
+			totalPrecioBase += invertido;
 			totalPrecioVenta += precioVenta;
 			totalImpuesto += impuesto;
 			totalComision += comision;
@@ -53,7 +58,7 @@ public class ReporteStockDTO{
 			                                     i,
 			                                     codigoProducto,
 			                                     cantidad,
-			                                     precioBase,
+			                                     invertido,
 			                                     precioVenta,
 			                                     impuesto,
 			                                     comision,
@@ -64,11 +69,11 @@ public class ReporteStockDTO{
 		return tablaInventario.toString();
 	}
 
-	public double calcularPorcentajeImpuesto (double paramPrecio){
-		if (paramPrecio > 600000){
-			return paramPrecio * 19 / 100;
+	public double calcularPorcentajeImpuesto (double paramPrecioConGanancia){
+		if (paramPrecioConGanancia > 600000){
+			return paramPrecioConGanancia * 0.19;
 		}
-		return paramPrecio * 5 / 100;
+		return paramPrecioConGanancia * 0.05;
 	}
 
 	public String generarTotalesTablaInventario (){

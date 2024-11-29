@@ -14,10 +14,10 @@ public class ReporteMasVendidosDTO{
 
 	public ReporteMasVendidosDTO (ArrayList <Venta> paramListaVentas, ArrayList <Producto> paramProductos){
 		listaVentas = paramListaVentas;
-		productos   = arrayToHashMap(paramProductos);
+		productos   = arrayToHashMapProductos(paramProductos);
 	}
 
-	private HashMap <String, Producto> arrayToHashMap (ArrayList <Producto> listaProductos){
+	private HashMap <String, Producto> arrayToHashMapProductos (ArrayList <Producto> listaProductos){
 		HashMap <String, Producto> productos = new HashMap <>();
 		for (Producto locProducto : listaProductos){
 			productos.put(locProducto.getCodigo(), locProducto);
@@ -28,15 +28,14 @@ public class ReporteMasVendidosDTO{
 	private void calcularVentasPorMarca (){
 		marcaMasVendida = new HashMap <>();
 		for (Venta locVenta : listaVentas){
-			if (locVenta.getCantidad() <= 0) continue;
 
 			Producto locProducto = obtenerProducto(locVenta.getCodigoProducto());
-			if (locProducto == null) continue;
+			if (locProducto == null || locVenta.getCantidad() < 1) continue;
 
 			if (marcaMasVendida.containsKey(locProducto.getMarca())){
-				int cantidad = marcaMasVendida.get(locProducto.getMarca());
-				cantidad += locVenta.getCantidad();
-				marcaMasVendida.put(locProducto.getMarca(), cantidad);
+				int cantidadVentas = marcaMasVendida.get(locProducto.getMarca());
+				cantidadVentas += locVenta.getCantidad();
+				marcaMasVendida.put(locProducto.getMarca(), cantidadVentas);
 				continue;
 			}
 			marcaMasVendida.put(locProducto.getMarca(), locVenta.getCantidad());
@@ -46,10 +45,9 @@ public class ReporteMasVendidosDTO{
 	private void calcularVentasPorLinea (){
 		lineaMasVendida = new HashMap <>();
 		for (Venta locVenta : listaVentas){
-			if (locVenta.getCantidad() <= 0) continue;
 
 			Producto locProducto = obtenerProducto(locVenta.getCodigoProducto());
-			if (locProducto == null) continue;
+			if (locProducto == null || locVenta.getCantidad() < 1) continue;
 
 			if (lineaMasVendida.containsKey(locProducto.getLinea())){
 				int cantidad = lineaMasVendida.get(locProducto.getLinea());
@@ -68,16 +66,20 @@ public class ReporteMasVendidosDTO{
 	private ArrayList <Producto> obtenerMarcaMasVendida (){
 		calcularVentasPorMarca();
 		ArrayList <Producto> listaMarcaMasVendida = new ArrayList <>();
-		for (HashMap.Entry <String, Integer> locMarca : marcaMasVendida.entrySet()){
-			if (locMarca.getValue() <= 0) continue;
+		for (String locMarca : marcaMasVendida.keySet()){
+
+			Producto locProducto = obtenerProducto(locMarca);
+			if (locProducto == null) continue;
 
 			if (listaMarcaMasVendida.isEmpty()){
-				listaMarcaMasVendida.add(obtenerProducto(locMarca.getKey()));
-			} else if (locMarca.getValue() > listaMarcaMasVendida.getFirst().getCantidad()){
+				listaMarcaMasVendida.add(locProducto);
+			} else if (marcaMasVendida.get(locMarca) > listaMarcaMasVendida.getFirst().getCantidad()){
 				listaMarcaMasVendida.clear();
-				listaMarcaMasVendida.add(obtenerProducto(locMarca.getKey()));
-			} else if (locMarca.getValue() == listaMarcaMasVendida.getFirst().getCantidad()){
-				listaMarcaMasVendida.add(obtenerProducto(locMarca.getKey()));
+				listaMarcaMasVendida.add(locProducto);
+			} else if (marcaMasVendida.get(locMarca) == listaMarcaMasVendida.getFirst().getCantidad()){
+				listaMarcaMasVendida.add(locProducto);
+			} else{
+				System.err.println("Se produjo un error operar la marca más vendida");
 			}
 		}
 		return listaMarcaMasVendida;
@@ -86,16 +88,18 @@ public class ReporteMasVendidosDTO{
 	private ArrayList <Producto> obtenerLineaMasVendida (){
 		calcularVentasPorLinea();
 		ArrayList <Producto> listaLineaMasVendida = new ArrayList <>();
-		for (HashMap.Entry <String, Integer> locLinea : lineaMasVendida.entrySet()){
-			if (locLinea.getValue() <= 0) continue;
+		for (String locLinea : lineaMasVendida.keySet()){
+
+			Producto locProducto = obtenerProducto(locLinea);
+			if (locProducto == null) continue;
 
 			if (listaLineaMasVendida.isEmpty()){
-				listaLineaMasVendida.add(obtenerProducto(locLinea.getKey()));
-			} else if (locLinea.getValue() > listaLineaMasVendida.getFirst().getCantidad()){
+				listaLineaMasVendida.add(locProducto);
+			} else if (lineaMasVendida.get(locLinea) > listaLineaMasVendida.getFirst().getCantidad()){
 				listaLineaMasVendida.clear();
-				listaLineaMasVendida.add(obtenerProducto(locLinea.getKey()));
-			} else if (locLinea.getValue() == listaLineaMasVendida.getFirst().getCantidad()){
-				listaLineaMasVendida.add(obtenerProducto(locLinea.getKey()));
+				listaLineaMasVendida.add(locProducto);
+			} else if (lineaMasVendida.get(locLinea) == listaLineaMasVendida.getFirst().getCantidad()){
+				listaLineaMasVendida.add(locProducto);
 			}
 		}
 		return listaLineaMasVendida;

@@ -67,13 +67,15 @@ public class ReporteImpuestosDTO{
 
 	private void calcularImpuestos (){
 		agregarProductos();
+		final double precioBaseConGanancia = 1.25;
 		baseGrabableImpuesto5  = 0;
 		baseGrabableImpuesto19 = 0;
 		for (Producto locProducto : listaProductosVendidos){
-			if (locProducto.getPrecio() > 600000){
-				baseGrabableImpuesto19 += locProducto.getPrecio() * locProducto.getCantidad();
+			double precioConGanancia = locProducto.getPrecio() * precioBaseConGanancia;
+			if (precioConGanancia > 600000){
+				baseGrabableImpuesto19 += precioConGanancia * locProducto.getCantidad();
 			} else{
-				baseGrabableImpuesto5 += locProducto.getPrecio() * locProducto.getCantidad();
+				baseGrabableImpuesto5 += precioConGanancia * locProducto.getCantidad();
 			}
 		}
 		impuesto5         = baseGrabableImpuesto5 * 0.05;
