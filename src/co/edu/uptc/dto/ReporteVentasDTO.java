@@ -60,7 +60,8 @@ public class ReporteVentasDTO{
 		for (Venta locVenta : paramVendedor.getVentasVendedor()){
 			Producto locProducto = obtenerProducto(locVenta.getCodigoProducto());
 			if (locProducto == null) continue;
-			totalComisiones += locProducto.getPrecio() * locVenta.getCantidad() * 0.05;
+			totalComisiones += locProducto.
+					                   getPrecio() * locVenta.getCantidad() * 0.05;
 		}
 		return totalComisiones;
 	}

@@ -96,12 +96,16 @@ public class VentanaPrincipal extends JFrame{
 	public void generarInformeMasVendidos (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Productos Mas Vendidos...");
 		ReporteMasVendidosDTO locReporteMasVendidosDTO = new ReporteMasVendidosDTO(tienda.getVentas(), tienda.getProductos());
-		JTextArea             textArea                 = new JTextArea(locReporteMasVendidosDTO.obtenerTablaMasVendidos());
+
+		//Por Valor
+		//JTextArea textArea = new JTextArea(locReporteMasVendidosDTO.obtenerTablaMasVendidosValor());
+
+		//Por Cantidad
+		JTextArea textArea = new JTextArea(locReporteMasVendidosDTO.obtenerTablaMasVendidosCantidad());
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		textArea.setEditable(false);
 
 		JScrollPane scrollPane = new JScrollPane(textArea);
-
 		JOptionPane.showMessageDialog(null, scrollPane, "Mas ventas", JOptionPane.PLAIN_MESSAGE);
 	}
 

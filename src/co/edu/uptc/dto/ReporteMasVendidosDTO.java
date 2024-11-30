@@ -5,149 +5,235 @@ import co.edu.uptc.modelo.Venta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ReporteMasVendidosDTO{
-	private HashMap <String, Integer>  marcaMasVendida;
-	private HashMap <String, Integer>  lineaMasVendida;
-	private ArrayList <Venta>          listaVentas;
-	private HashMap <String, Producto> productos;
+	private HashMap <String, Double>  marcasMasVendidasPorValor;
+	private HashMap <String, Double>  lineasMasVendidasPorValor;
+	private HashMap <String, Integer> marcasMasVendidasPorCantidad;
+	private HashMap <String, Integer> lineasMasVendidasPorCantidad;
+	private ArrayList <Venta>         listaVentas;
+	private ArrayList <Producto>      listaProductos;
 
 	public ReporteMasVendidosDTO (ArrayList <Venta> paramListaVentas, ArrayList <Producto> paramProductos){
-		listaVentas = paramListaVentas;
-		productos   = arrayToHashMapProductos(paramProductos);
-	}
-
-	private HashMap <String, Producto> arrayToHashMapProductos (ArrayList <Producto> listaProductos){
-		HashMap <String, Producto> productos = new HashMap <>();
-		for (Producto locProducto : listaProductos){
-			productos.put(locProducto.getCodigo(), locProducto);
-		}
-		return productos;
-	}
-
-	private void calcularVentasPorMarca (){
-		marcaMasVendida = new HashMap <>();
-		for (Venta locVenta : listaVentas){
-
-			Producto locProducto = obtenerProducto(locVenta.getCodigoProducto());
-			if (locProducto == null || locVenta.getCantidad() < 1) continue;
-
-			if (marcaMasVendida.containsKey(locProducto.getMarca())){
-				int cantidadVentas = marcaMasVendida.get(locProducto.getMarca());
-				cantidadVentas += locVenta.getCantidad();
-				marcaMasVendida.put(locProducto.getMarca(), cantidadVentas);
-				continue;
-			}
-			marcaMasVendida.put(locProducto.getMarca(), locVenta.getCantidad());
-		}
-	}
-
-	private void calcularVentasPorLinea (){
-		lineaMasVendida = new HashMap <>();
-		for (Venta locVenta : listaVentas){
-
-			Producto locProducto = obtenerProducto(locVenta.getCodigoProducto());
-			if (locProducto == null || locVenta.getCantidad() < 1) continue;
-
-			if (lineaMasVendida.containsKey(locProducto.getLinea())){
-				int cantidad = lineaMasVendida.get(locProducto.getLinea());
-				cantidad += locVenta.getCantidad();
-				lineaMasVendida.put(locProducto.getLinea(), cantidad);
-				continue;
-			}
-			lineaMasVendida.put(locProducto.getLinea(), locVenta.getCantidad());
-		}
+		listaVentas                  = paramListaVentas;
+		listaProductos               = paramProductos;
+		marcasMasVendidasPorValor    = new HashMap <>();
+		lineasMasVendidasPorValor    = new HashMap <>();
+		marcasMasVendidasPorCantidad = new HashMap <>();
+		lineasMasVendidasPorCantidad = new HashMap <>();
 	}
 
 	private Producto obtenerProducto (String paramCodigoProducto){
-		return productos.get(paramCodigoProducto);
+		Producto producto = null;
+		for (Producto locProducto : listaProductos){
+			if (locProducto.getCodigo().equals(paramCodigoProducto)){
+				producto = locProducto;
+			}
+		}
+		return producto;
 	}
 
-	private ArrayList <Producto> obtenerMarcaMasVendida (){
-		calcularVentasPorMarca();
-		ArrayList <Producto> listaMarcaMasVendida = new ArrayList <>();
-		for (String locMarca : marcaMasVendida.keySet()){
-
-			Producto locProducto = obtenerProducto(locMarca);
+	private void almacenarMarcasMasVendidasPorValor (){
+		for (Venta locVenta : listaVentas){
+			String   locCodigoProducto = locVenta.getCodigoProducto();
+			Producto locProducto       = obtenerProducto(locCodigoProducto);
 			if (locProducto == null) continue;
-
-			if (listaMarcaMasVendida.isEmpty()){
-				listaMarcaMasVendida.add(locProducto);
-			} else if (marcaMasVendida.get(locMarca) > listaMarcaMasVendida.getFirst().getCantidad()){
-				listaMarcaMasVendida.clear();
-				listaMarcaMasVendida.add(locProducto);
-			} else if (marcaMasVendida.get(locMarca) == listaMarcaMasVendida.getFirst().getCantidad()){
-				listaMarcaMasVendida.add(locProducto);
-			} else{
-				System.err.println("Se produjo un error operar la marca más vendida");
+			String locMarca = locProducto.getMarca();
+			double valor;
+			if (marcasMasVendidasPorValor.containsKey(locMarca)){
+				valor = marcasMasVendidasPorValor.get(locMarca);
+				valor += locVenta.getCantidad() * obtenerPrecioVenta(locProducto.getPrecio());
+				marcasMasVendidasPorValor.put(locMarca, valor);
+				continue;
 			}
+			valor = locVenta.getCantidad() * obtenerPrecioVenta(locProducto.getPrecio());
+			marcasMasVendidasPorValor.put(locMarca, valor);
 		}
-		return listaMarcaMasVendida;
 	}
 
-	private ArrayList <Producto> obtenerLineaMasVendida (){
-		calcularVentasPorLinea();
-		ArrayList <Producto> listaLineaMasVendida = new ArrayList <>();
-		for (String locLinea : lineaMasVendida.keySet()){
-
-			Producto locProducto = obtenerProducto(locLinea);
+	private void almacenarLineasMasVendidasPorValor (){
+		for (Venta locVenta : listaVentas){
+			String   locCodigoProducto = locVenta.getCodigoProducto();
+			Producto locProducto       = obtenerProducto(locCodigoProducto);
 			if (locProducto == null) continue;
-
-			if (listaLineaMasVendida.isEmpty()){
-				listaLineaMasVendida.add(locProducto);
-			} else if (lineaMasVendida.get(locLinea) > listaLineaMasVendida.getFirst().getCantidad()){
-				listaLineaMasVendida.clear();
-				listaLineaMasVendida.add(locProducto);
-			} else if (lineaMasVendida.get(locLinea) == listaLineaMasVendida.getFirst().getCantidad()){
-				listaLineaMasVendida.add(locProducto);
+			String locLinea = locProducto.getLinea();
+			double valor;
+			if (lineasMasVendidasPorValor.containsKey(locLinea)){
+				valor = lineasMasVendidasPorValor.get(locLinea);
+				valor += locVenta.getCantidad() * obtenerPrecioVenta(locProducto.getPrecio());
+				lineasMasVendidasPorValor.put(locLinea, valor);
+				continue;
 			}
+			valor = locVenta.getCantidad() * obtenerPrecioVenta(locProducto.getPrecio());
+			lineasMasVendidasPorValor.put(locLinea, valor);
 		}
-		return listaLineaMasVendida;
 	}
 
-	public String obtenerTablaMasVendidos (){
-		ArrayList <Producto> listaMarcaMasVendida = obtenerMarcaMasVendida();
-		ArrayList <Producto> listaLineaMasVendida = obtenerLineaMasVendida();
+	private void almacenarMarcasMasVendidasPorCantidad (){
+		for (Venta locVenta : listaVentas){
+			String   locCodigoProducto = locVenta.getCodigoProducto();
+			Producto locProducto       = obtenerProducto(locCodigoProducto);
+			if (locProducto == null) continue;
+			String locMarca = locProducto.getMarca();
+			int    cantidad;
+			if (marcasMasVendidasPorCantidad.containsKey(locMarca)){
+				cantidad = marcasMasVendidasPorCantidad.get(locMarca);
+				cantidad += locVenta.getCantidad();
+				marcasMasVendidasPorCantidad.put(locMarca, cantidad);
+				continue;
+			}
+			cantidad = locVenta.getCantidad();
+			marcasMasVendidasPorCantidad.put(locMarca, cantidad);
+		}
+	}
 
-		StringBuilder tablaMasVendidos = new StringBuilder();
-		String        columna0         = "Concepto";
-		String        columna1         = "Valor";
-		tablaMasVendidos.append(String.format("%-30s | %-15s%n", columna0, columna1));
+	private void almacenarLineasMasVendidasPorCantidad (){
+		for (Venta locVenta : listaVentas){
+			String   locCodigoProducto = locVenta.getCodigoProducto();
+			Producto locProducto       = obtenerProducto(locCodigoProducto);
+			if (locProducto == null) continue;
+			String locLinea = locProducto.getLinea();
+			int    cantidad;
+			if (lineasMasVendidasPorCantidad.containsKey(locLinea)){
+				cantidad = lineasMasVendidasPorCantidad.get(locLinea);
+				cantidad += locVenta.getCantidad();
+				lineasMasVendidasPorCantidad.put(locLinea, cantidad);
+				continue;
+			}
+			cantidad = locVenta.getCantidad();
+			lineasMasVendidasPorCantidad.put(locLinea, cantidad);
+		}
+	}
 
-		String fila1 = "Marca +Vendida";
-		String fila2 = "Cantidad ventas Marca +Vendida";
-
-		StringBuilder marcaMasVendida = new StringBuilder();
-
-		if (listaMarcaMasVendida.size() == 1){
-			marcaMasVendida = new StringBuilder(listaMarcaMasVendida.getFirst().getMarca());
+	private double obtenerPrecioVenta (double precioBase){
+		double precioConGanancia = precioBase * 1.25;
+		if (precioConGanancia > 600000){
+			return precioConGanancia * 1.19;
+		} else if (precioConGanancia > 0){
+			return precioConGanancia * 1.05;
 		} else{
-			for (Producto locProducto : listaMarcaMasVendida){
-				marcaMasVendida.append(locProducto.getMarca());
-				marcaMasVendida.append("\n");
+			return 0;
+		}
+	}
+
+	private String[] obtenerMarcaMasVendidaPorValor (){
+		almacenarMarcasMasVendidasPorValor();
+		String[] marcaMasVendidaValor = {"Marca", "$Valor Marca"};
+		double   valorMaximo          = 0;
+		for (Map.Entry <String, Double> keyValue : marcasMasVendidasPorValor.entrySet()){
+			if (keyValue.getValue() > valorMaximo){
+				valorMaximo = keyValue.getValue();
+
+				marcaMasVendidaValor[0] = keyValue.getKey();
+				marcaMasVendidaValor[1] = keyValue.getValue().toString();
 			}
 		}
+		return marcaMasVendidaValor;
+	}
 
-		tablaMasVendidos.append(String.format("%-30s | %-15s%n", fila1, marcaMasVendida));
-		tablaMasVendidos.append(String.format("%-30s | %-15s%n", fila2, listaMarcaMasVendida.getFirst().getCantidad()));
+	private String[] obtenerLineaMasVendidaPorValor (){
+		almacenarLineasMasVendidasPorValor();
+		String[] lineaMasVendidaValor = {"Linea", "$Valor Linea"};
+		double   valorMaximo          = 0;
+		for (Map.Entry <String, Double> keyValue : lineasMasVendidasPorValor.entrySet()){
+			if (keyValue.getValue() > valorMaximo){
+				valorMaximo = keyValue.getValue();
 
-		String fila3 = "Linea +Vendida";
-		String fila4 = "Cantidad ventas Línea +Vendida";
-
-		StringBuilder lineaMasVendida = new StringBuilder();
-
-		if (listaLineaMasVendida.size() == 1){
-			lineaMasVendida = new StringBuilder(listaLineaMasVendida.getFirst().getLinea());
-		} else{
-			for (Producto locProducto : listaLineaMasVendida){
-				lineaMasVendida.append(locProducto.getLinea());
-				lineaMasVendida.append("\n");
+				lineaMasVendidaValor[0] = keyValue.getKey();
+				lineaMasVendidaValor[1] = keyValue.getValue().toString();
 			}
 		}
+		return lineaMasVendidaValor;
+	}
 
-		tablaMasVendidos.append(String.format("%-30s | %-15s%n", fila3, lineaMasVendida));
-		tablaMasVendidos.append(String.format("%-30s | %-15s%n", fila4, listaLineaMasVendida.getFirst().getCantidad()));
+	private String[] obtenerMarcaMasVendidaPorCantidad (){
+		almacenarMarcasMasVendidasPorCantidad();
+		String[] marcaMasVendidaCantidad = {"Marca", "$Cantidad Marca"};
+		double   cantidadMaxima          = 0;
+		for (Map.Entry <String, Integer> keyValue : marcasMasVendidasPorCantidad.entrySet()){
+			if (keyValue.getValue() > cantidadMaxima){
+				cantidadMaxima = keyValue.getValue();
 
-		return tablaMasVendidos.toString();
+				marcaMasVendidaCantidad[0] = keyValue.getKey();
+				marcaMasVendidaCantidad[1] = keyValue.getValue().toString();
+			}
+		}
+		return marcaMasVendidaCantidad;
+	}
+
+	private String[] obtenerLineaMasVendidaPorCantidad (){
+		almacenarLineasMasVendidasPorCantidad();
+		String[] lineaMasVendidaCantidad = {"Linea", "$Cantidad Linea"};
+		double   cantidadMaxima          = 0;
+		for (Map.Entry <String, Integer> keyValue : lineasMasVendidasPorCantidad.entrySet()){
+			if (keyValue.getValue() > cantidadMaxima){
+				cantidadMaxima = keyValue.getValue();
+
+				lineaMasVendidaCantidad[0] = keyValue.getKey();
+				lineaMasVendidaCantidad[1] = keyValue.getValue().toString();
+			}
+		}
+		return lineaMasVendidaCantidad;
+	}
+
+	public String obtenerTablaMasVendidosValor (){
+		String        columna1 = "Concepto";
+		String        columna2 = "Valor";
+		StringBuilder tabla    = new StringBuilder(String.format("%-16s | %-16s%n", columna1, columna2));
+		String        fila1    = "Marca";
+		String        fila2    = "Ventas Marca";
+		String        fila3    = "Linea";
+		String        fila4    = "Ventas Linea";
+
+		String[] marca = obtenerMarcaMasVendidaPorValor();
+		String[] linea = obtenerLineaMasVendidaPorValor();
+
+		double valorMarca = 0;
+		double valorLinea = 0;
+
+		try{
+			valorMarca = Double.parseDouble(marca[1]);
+			valorLinea = Double.parseDouble(linea[1]);
+		} catch (NumberFormatException e){
+			System.err.println("Ocurrió un error al procesar: " + e.getMessage());
+		}
+
+		tabla.append(String.format("%-16s | %16s%n", fila1, marca[0]));
+		tabla.append(String.format("%-16s | %,16.1f%n", fila2, valorMarca));
+		tabla.append(String.format("%-16s | %16s%n", fila3, linea[0]));
+		tabla.append(String.format("%-16s | %,16.1f%n", fila4, valorLinea));
+
+		return tabla.toString();
+	}
+
+	public String obtenerTablaMasVendidosCantidad (){
+		String        columna1 = "Concepto";
+		String        columna2 = "Cantidad";
+		StringBuilder tabla    = new StringBuilder(String.format("%-16s | %-16s%n", columna1, columna2));
+		String        fila1    = "Marca";
+		String        fila2    = "Ventas Marca";
+		String        fila3    = "Linea";
+		String        fila4    = "Ventas Linea";
+
+		String[] marca = obtenerMarcaMasVendidaPorCantidad();
+		String[] linea = obtenerLineaMasVendidaPorCantidad();
+
+		int cantidadMarca = 0;
+		int cantidadLinea = 0;
+
+		try{
+			cantidadMarca = Integer.parseInt(marca[1]);
+			cantidadLinea = Integer.parseInt(linea[1]);
+		} catch (NumberFormatException e){
+			System.err.println("Ocurrió un error al procesar: " + e.getMessage());
+		}
+
+		tabla.append(String.format("%-16s | %16s%n", fila1, marca[0]));
+		tabla.append(String.format("%-16s | %,16d%n", fila2, cantidadMarca));
+		tabla.append(String.format("%-16s | %16s%n", fila3, linea[0]));
+		tabla.append(String.format("%-16s | %,16d%n", fila4, cantidadLinea));
+
+		return tabla.toString();
 	}
 }

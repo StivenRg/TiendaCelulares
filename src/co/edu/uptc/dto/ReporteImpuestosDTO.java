@@ -90,11 +90,11 @@ public class ReporteImpuestosDTO{
 
 		String fila1 = "Impuesto 5%";
 		String fila2 = "Impuesto 19%";
-		tablaImpuestos.append(String.format("%-20s|$%,20.2f|$%,20.2f%n", fila1, baseGrabableImpuesto5, impuesto5));
-		tablaImpuestos.append(String.format("%-20s|$%,20.2f|$%,20.2f%n", fila2, baseGrabableImpuesto19, impuesto19));
+		tablaImpuestos.append(String.format("%-20s|$%,20.1f|$%,20.1f%n", fila1, baseGrabableImpuesto5, impuesto5));
+		tablaImpuestos.append(String.format("%-20s|$%,20.1f|$%,20.1f%n", fila2, baseGrabableImpuesto19, impuesto19));
 
 		String fila3 = "Sumatoria de Totales";
-		tablaImpuestos.append(String.format("%-20s|$%,20.2f|$%,20.2f", fila3, totalBaseGrabable, totalImpuesto));
+		tablaImpuestos.append(String.format("%-20s|$%,20.1f|$%,20.1f", fila3, totalBaseGrabable, totalImpuesto));
 
 		return tablaImpuestos.toString();
 	}
