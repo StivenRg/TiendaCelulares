@@ -13,6 +13,9 @@ public class Tienda{
 		ventas     = new ArrayList <>();
 	}
 
+	/// Metodo encargado de agregar los productos a la lista de la tienda
+	///
+	/// @param paramDatos: Strin[] de Datos de los productos separados por \n
 	public void agregarProductos (String[] paramDatos){
 		for (String locLinea : paramDatos){
 			String[] locDato = locLinea.strip().split("\\|");
@@ -39,12 +42,21 @@ public class Tienda{
 		}
 	}
 
+	/// Metodo encargado de descontar un producto de la lista de productos cuando se realiza una venta
+	///
+	/// @param paramCodigoProducto: String con el Código del producto
+	/// @param paramCantidad: int con la cantidad de producto a descontar
 	private void descontarProducto (String paramCodigoProducto, int paramCantidad){
 		Producto producto = obtenerProducto(paramCodigoProducto);
 		if (producto == null) return;
 		producto.setCantidad(producto.getCantidad() - paramCantidad);
 	}
 
+	/// Metodo encargado de validar los datos de un producto
+	///
+	/// @param paramProducto: Objeto de tipo Producto
+	///
+	/// @return boolean: true si los datos del producto son válidos, false en caso contrario
 	private boolean validarCamposProducto (Producto paramProducto){
 		if (paramProducto.getMarca().isBlank()){
 			return false;
@@ -64,6 +76,11 @@ public class Tienda{
 		return true;
 	}
 
+	/// Metodo encargado de obtener el producto de la lista de productos a partir del codigo
+	///
+	/// @param paramCodigoProducto: String con el código del producto
+	///
+	/// @return Producto: Objeto de tipo Producto. En caso de que no exista el producto, devuelve null
 	private Producto obtenerProducto (String paramCodigoProducto){
 		for (Producto locProducto : productos){
 			if (paramCodigoProducto.equalsIgnoreCase(locProducto.getCodigo())){
@@ -73,10 +90,18 @@ public class Tienda{
 		return null;
 	}
 
+	/// Metodo encargado de obtener la lista de productos
+	///
+	/// @return ArrayList <Producto>: ArrayList de tipo Producto con todos los productos
 	public ArrayList <Producto> getProductos (){
 		return productos;
 	}
 
+	/// Metodo encargado de obtener el vendedor de la lista de vendedores a partir del codigo
+	///
+	/// @param paramCodigoVendedor: String con el código del vendedor
+	///
+	/// @return Vendedor: Objeto de tipo Vendedor. En caso de que no exista el vendedor, devuelve null
 	private Vendedor obtenerVendedor (String paramCodigoVendedor){
 		for (Vendedor locVendedor : vendedores){
 			if (paramCodigoVendedor.equalsIgnoreCase(locVendedor.getCodigoVendedor())){
@@ -86,6 +111,9 @@ public class Tienda{
 		return null;
 	}
 
+	/// Metodo encargado de agregar los vendedores a la lista de la tienda
+	///
+	/// @param paramDatos: String[] de Datos de los vendedores separados por \n
 	public void agregarVendedor (String[] paramDatos){
 		final String separadorDato = "\\|";
 		for (String locLinea : paramDatos){
@@ -117,6 +145,11 @@ public class Tienda{
 		}
 	}
 
+	/// Metodo encargado de validar los datos de un vendedor
+	///
+	/// @param paramVendedor: Vendedor
+	///
+	/// @return boolean: true si los datos del vendedor son válidos, false en caso contrario
 	private boolean validarVendedor (Vendedor paramVendedor){
 		if (paramVendedor.getNumeroTelefono() < 3000000000L){
 			return false;
@@ -138,10 +171,16 @@ public class Tienda{
 		return true;
 	}
 
+	/// Metodo encargado de obtener la lista de vendedores
+	///
+	/// @return ArrayList <Vendedor>: ArrayList de tipo Vendedor con todos los vendedores
 	public ArrayList <Vendedor> getVendedores (){
 		return vendedores;
 	}
 
+	/// Metodo encargado de agregar las ventas a la lista de la tienda
+	///
+	/// @param paramDatos: String[] de Datos de las ventas separados por \n
 	public void agregarVenta (String[] paramDatos){
 		final String separadorDato = "\\|";
 		for (String locLinea : paramDatos){
@@ -170,6 +209,10 @@ public class Tienda{
 		}
 	}
 
+	/// Metodo encargado de agregar una venta a un vendedor
+	///
+	/// @param paramCodigoVendedor: String con el Código del vendedor
+	/// @param paramVenta: Objeto de tipo Venta con la venta
 	private void agregarVentaVendedor (String paramCodigoVendedor, Venta paramVenta){
 		Vendedor vendedor = obtenerVendedor(paramCodigoVendedor);
 		if (vendedor == null){
@@ -181,6 +224,13 @@ public class Tienda{
 		vendedor.agregarVenta(codigoProducto, cantidad);
 	}
 
+	/// Metodo encargado de validar las ventas
+	///
+	/// @param codigoVendedor: String con el Código del vendedor
+	/// @param codigoProducto: String con el Código del producto
+	/// @param cantidad: int con la cantidad de producto
+	///
+	/// @return boolean: true si las ventas son válidas, false en caso contrario
 	private boolean validarVenta (String codigoVendedor, String codigoProducto, int cantidad){
 		if (cantidad < 1){
 			return false;
@@ -198,6 +248,9 @@ public class Tienda{
 		return true;
 	}
 
+	/// Metodo encargado de obtener la lista de ventas
+	///
+	/// @return ArrayList <Venta>: ArrayList de tipo Venta con todas las ventas
 	public ArrayList <Venta> getVentas (){
 		return ventas;
 	}

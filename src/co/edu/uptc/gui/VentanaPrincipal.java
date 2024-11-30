@@ -39,24 +39,28 @@ public class VentanaPrincipal extends JFrame{
 		ventana.setVisible(true);
 	}
 
+	/// Metodo encargado de cargar los datos del Inventario
 	public void cargarInfoInventario (){
 		String[] datosProductos = info.obtenerDatos();
 		tienda.agregarProductos(datosProductos);
 		JOptionPane.showMessageDialog(null, "Guardando Inventario...");
 	}
 
+	/// Metodo encargado de cargar los datos de las personas
 	public void cargarInfoPersona (){
 		String[] datosPersonas = persona.obtenerDatos();
 		tienda.agregarVendedor(datosPersonas);
 		JOptionPane.showMessageDialog(this, "Agregando Vendedores...");
 	}
 
+	/// Metodo encargado de cargar los datos de las ventas
 	public void cargarInfoVentas (){
 		String[] datosVentas = infoVentas.obtenerDatos();
 		tienda.agregarVenta(datosVentas);
 		JOptionPane.showMessageDialog(this, "Efectuando ventas...");
 	}
 
+	/// Metodo encargado de generar el informe de Inventario
 	public void generarInformeInventario (){
 		JOptionPane.showMessageDialog(this, "Cargando Inventario...");
 		ReporteStockDTO reporteStock = new ReporteStockDTO();
@@ -69,6 +73,7 @@ public class VentanaPrincipal extends JFrame{
 		JOptionPane.showMessageDialog(null, scrollPane, "Inventario", JOptionPane.PLAIN_MESSAGE);
 	}
 
+	/// Metodo encargado de generar el informe de Impuestos
 	public void generarInformeImpuestos (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Impuestos...");
 		ReporteImpuestosDTO locReporteImpuestosDTO = new ReporteImpuestosDTO(tienda.getVentas(), tienda.getProductos());
@@ -81,6 +86,7 @@ public class VentanaPrincipal extends JFrame{
 		JOptionPane.showMessageDialog(null, scrollPane, "Impuestos", JOptionPane.PLAIN_MESSAGE);
 	}
 
+	/// Metodo encargado de generar el informe de Ventas
 	public void generarInformeVentas (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Ventas...");
 		ReporteVentasDTO locReporteVentasDTO = new ReporteVentasDTO(tienda.getProductos());
@@ -93,6 +99,7 @@ public class VentanaPrincipal extends JFrame{
 		JOptionPane.showMessageDialog(null, scrollPane, "Ventas", JOptionPane.PLAIN_MESSAGE);
 	}
 
+	/// Metodo encargado de generar el informe de Productos Mas Vendidos
 	public void generarInformeMasVendidos (){
 		JOptionPane.showMessageDialog(this, "Cargando Informe de Productos Mas Vendidos...");
 		ReporteMasVendidosDTO locReporteMasVendidosDTO = new ReporteMasVendidosDTO(tienda.getVentas(), tienda.getProductos());
@@ -109,6 +116,7 @@ public class VentanaPrincipal extends JFrame{
 		JOptionPane.showMessageDialog(null, scrollPane, "Mas ventas", JOptionPane.PLAIN_MESSAGE);
 	}
 
+	/// Metodo encargado de salir de la aplicación
 	public void salir (){
 		System.exit(0);
 	}

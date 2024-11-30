@@ -18,6 +18,7 @@ public class Producto{
 	public Producto (){
 	}
 
+	//Métodos getter y setter
 	public String getMarca (){
 		return marca;
 	}

@@ -30,6 +30,7 @@ public class Vendedor{
 		return nombre;
 	}
 
+	//Métodos setter y getter
 	public void setNombre (String paramNombre){
 		nombre = paramNombre.toUpperCase();
 	}
@@ -78,12 +79,16 @@ public class Vendedor{
 		return codigoVendedor;
 	}
 
+	public ArrayList <Venta> getVentasVendedor (){
+		return ventasVendedor;
+	}
+
+	/// Metodo encargado de agregar una venta a un vendedor
+	///
+	/// @param paramCodigoProducto: Código del producto
+	/// @param paramCantidad: Cantidad de producto
 	public void agregarVenta (String paramCodigoProducto, int paramCantidad){
 		Venta venta = new Venta(codigoVendedor, paramCodigoProducto, paramCantidad);
 		ventasVendedor.add(venta);
-	}
-
-	public ArrayList <Venta> getVentasVendedor (){
-		return ventasVendedor;
 	}
 }

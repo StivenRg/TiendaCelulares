@@ -19,6 +19,9 @@ public class ReporteVentasDTO{
 		listaProductos = paramListaProductos;
 	}
 
+	/// Metodo encargado de generar la cabecera de la tabla de ventas por vendedor
+	///
+	/// @return String: Cabecera de la tabla de ventas por vendedor
 	public String generarCabecerasTablaVentasPorVendedor (){
 		StringBuilder tablaVentasPorVendedor = new StringBuilder();
 		String        columna0               = "Tipo ID y #";
@@ -31,6 +34,11 @@ public class ReporteVentasDTO{
 		return tablaVentasPorVendedor.toString();
 	}
 
+	/// Metodo encargado de obtener la tabla de ventas por vendedor
+	///
+	/// @param vendedores: Lista de vendedores
+	///
+	/// @return String: Tabla de ventas por vendedor
 	public String obtenerTablaVentas (ArrayList <Vendedor> vendedores){
 		StringBuilder tablaVentasPorVendedor = new StringBuilder(generarCabecerasTablaVentasPorVendedor());
 		int           i                      = 1;
@@ -47,6 +55,11 @@ public class ReporteVentasDTO{
 		return tablaVentasPorVendedor.toString();
 	}
 
+	/// Metodo encargado de calcular el número de celulares vendidos por vendedor
+	///
+	/// @param paramVendedor: Vendedor
+	///
+	/// @return int: Número de celulares vendidos por vendedor
 	private int calcularCelularesVendidos (Vendedor paramVendedor){
 		celularesVendidos = 0;
 		for (Venta locVenta : paramVendedor.getVentasVendedor()){
@@ -55,17 +68,26 @@ public class ReporteVentasDTO{
 		return celularesVendidos;
 	}
 
+	/// Metodo encargado de calcular las comisiones por vendedor
+	///
+	/// @param paramVendedor: Vendedor
+	///
+	/// @return double: Comisiones por vendedor
 	private double calcularComisiones (Vendedor paramVendedor){
 		totalComisiones = 0;
 		for (Venta locVenta : paramVendedor.getVentasVendedor()){
 			Producto locProducto = obtenerProducto(locVenta.getCodigoProducto());
 			if (locProducto == null) continue;
-			totalComisiones += locProducto.
-					                   getPrecio() * locVenta.getCantidad() * 0.05;
+			totalComisiones += locProducto.getPrecio() * locVenta.getCantidad() * 0.05;
 		}
 		return totalComisiones;
 	}
 
+	/// Metodo encargado de obtener el producto de la lista de productos a partir del codigo
+	///
+	/// @param paramCodigoProducto: codigo del producto
+	///
+	/// @return Producto: Producto con el código indicado En caso de que no exista el producto, devuelve null
 	private Producto obtenerProducto (String paramCodigoProducto){
 		for (Producto locProducto : listaProductos){
 			if (locProducto.getCodigo().equals(paramCodigoProducto)){

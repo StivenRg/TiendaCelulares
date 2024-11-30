@@ -14,6 +14,7 @@ public class Venta{
 	public Venta (){
 	}
 
+	// Métodos getter y setter
 	public String getCodigoProducto (){
 		return codigoProducto;
 	}

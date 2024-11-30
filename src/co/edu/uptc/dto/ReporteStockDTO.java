@@ -15,6 +15,9 @@ public class ReporteStockDTO{
 	public ReporteStockDTO (){
 	}
 
+	/// Metodo encargado de generar la cabecera de la tabla de Inventario
+	///
+	/// @return String: Cabecera de la tabla de Inventario
 	public String generarCabecerasTablaInventario (){
 		String columna0 = "Codigo";
 		String columna1 = "Cantidad";
@@ -26,6 +29,11 @@ public class ReporteStockDTO{
 		return String.format("###| %-18s | %-18s | %-18s  | %-18s  | %-18s  | %-18s  | %-18s %n", columna0, columna1, columna2, columna3, columna4, columna5, columna6);
 	}
 
+	/// Metodo encargado de obtener la tabla de Inventario
+	///
+	/// @param productos: Lista de productos
+	///
+	/// @return String: Tabla de Inventario
 	public String obtenerTablaInventario (ArrayList <Producto> productos){
 		StringBuilder tablaInventario = new StringBuilder(generarCabecerasTablaInventario());
 		int           i               = 1;
@@ -42,7 +50,7 @@ public class ReporteStockDTO{
 			double invertido      = locProducto.getPrecio() * cantidad;
 
 			double precioBaseConGanancia = locProducto.getPrecio() * porcentajeConGanancia * cantidad;
-			double impuesto              = calcularPorcentajeImpuesto(locProducto.getPrecio() * porcentajeConGanancia) * cantidad;
+			double impuesto              = calcularImpuesto(locProducto.getPrecio() * porcentajeConGanancia) * cantidad;
 			double precioVenta           = (precioBaseConGanancia + impuesto);
 			double comision              = locProducto.getPrecio() * porcentajeComision * cantidad;
 			double ganancia              = precioBaseConGanancia - invertido - comision;
@@ -69,13 +77,21 @@ public class ReporteStockDTO{
 		return tablaInventario.toString();
 	}
 
-	public double calcularPorcentajeImpuesto (double paramPrecioConGanancia){
+	/// Metodo encargado de calcular el valor de los impuestos
+	///
+	/// @param paramPrecioConGanancia: Precio con ganancia
+	///
+	/// @return double: Valor de impuestos (5% o 19%)
+	public double calcularImpuesto (double paramPrecioConGanancia){
 		if (paramPrecioConGanancia > 600000){
 			return paramPrecioConGanancia * 0.19;
 		}
 		return paramPrecioConGanancia * 0.05;
 	}
 
+	/// Metodo encargado de generar la cabecera de la tabla de Totales
+	///
+	/// @return String: Cabecera de la tabla de Totales
 	public String generarTotalesTablaInventario (){
 		StringBuilder tablaInventario = new StringBuilder();
 		tablaInventario.append(String.format("%3s| %-18s | %,-18d | $%,18.1f | $%,18.1f | $%,18.1f | $%,18.1f | $%,18.1f%n",

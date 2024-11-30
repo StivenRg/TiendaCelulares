@@ -20,6 +20,9 @@ public class PanelVentas extends JPanel{
 		add(accion1, BorderLayout.SOUTH);
 	}
 
+	/// Metodo encargado de obtener los datos de la venta
+	///
+	/// @return String[]: Datos de la venta separados por \n
 	public String[] obtenerDatos (){
 		final String separadorLinea = "\n";
 		String       lineas         = txInformacion.getText();

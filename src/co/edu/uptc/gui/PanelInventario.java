@@ -20,6 +20,9 @@ public class PanelInventario extends JPanel{
 		add(accion1, BorderLayout.SOUTH);
 	}
 
+	/// Metodo encargado de obtener los datos del Inventario
+	///
+	/// @return String[]: Datos del Inventario separados por \n
 	public String[] obtenerDatos (){
 		final String separadorLinea = "\n";
 		String       lineas         = txInformacion.getText();

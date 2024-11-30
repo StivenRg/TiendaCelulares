@@ -20,6 +20,9 @@ public class PanelPersona extends JPanel{
 		add(accion1, BorderLayout.SOUTH);
 	}
 
+	/// Metodo encargado de obtener los datos de las personas
+	///
+	/// @return String[]: Datos de las personas separados por \n
 	public String[] obtenerDatos (){
 		final String separadorLinea = "\n";
 		String       lineas         = txInformacion.getText();

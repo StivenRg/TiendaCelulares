@@ -24,6 +24,11 @@ public class ReporteMasVendidosDTO{
 		lineasMasVendidasPorCantidad = new HashMap <>();
 	}
 
+	/// Metodo encargado de obtener el producto de la lista de productos a partir del codigo
+	///
+	/// @param paramCodigoProducto: Código del producto
+	///
+	/// @return Producto: Producto con el código indicado En caso de que no exista el producto, devuelve null
 	private Producto obtenerProducto (String paramCodigoProducto){
 		Producto producto = null;
 		for (Producto locProducto : listaProductos){
@@ -34,6 +39,7 @@ public class ReporteMasVendidosDTO{
 		return producto;
 	}
 
+	/// Metodo encargado de almacenar las marcas de los productos vendidos por valor
 	private void almacenarMarcasMasVendidasPorValor (){
 		for (Venta locVenta : listaVentas){
 			String   locCodigoProducto = locVenta.getCodigoProducto();
@@ -52,6 +58,7 @@ public class ReporteMasVendidosDTO{
 		}
 	}
 
+	/// Metodo encargado de almacenar las líneas de los productos vendidos por valor
 	private void almacenarLineasMasVendidasPorValor (){
 		for (Venta locVenta : listaVentas){
 			String   locCodigoProducto = locVenta.getCodigoProducto();
@@ -70,6 +77,7 @@ public class ReporteMasVendidosDTO{
 		}
 	}
 
+	/// Metodo encargado de almacenar las marcas de los productos vendidos por cantidad
 	private void almacenarMarcasMasVendidasPorCantidad (){
 		for (Venta locVenta : listaVentas){
 			String   locCodigoProducto = locVenta.getCodigoProducto();
@@ -88,6 +96,7 @@ public class ReporteMasVendidosDTO{
 		}
 	}
 
+	/// Metodo encargado de almacenar las líneas de los productos vendidos por cantidad
 	private void almacenarLineasMasVendidasPorCantidad (){
 		for (Venta locVenta : listaVentas){
 			String   locCodigoProducto = locVenta.getCodigoProducto();
@@ -106,6 +115,11 @@ public class ReporteMasVendidosDTO{
 		}
 	}
 
+	/// Metodo encargado de obtener el precio de la venta
+	///
+	/// @param precioBase: Precio base
+	///
+	/// @return double: Precio de la venta ((Precio Base + %Ganancia) + %Impuesto)
 	private double obtenerPrecioVenta (double precioBase){
 		double precioConGanancia = precioBase * 1.25;
 		if (precioConGanancia > 600000){
@@ -117,6 +131,13 @@ public class ReporteMasVendidosDTO{
 		}
 	}
 
+	/// Metodo encargado de obtener los datos de las marcas de los productos vendidos por valor
+	///
+	/// @return String[]: Datos de las marcas de los productos vendidos por valor (Marca, Valor Marca).
+	///
+	/// Solo retorna los datos de las marcas de los productos vendidos por valor que tengan un valor mayor a 0.
+	///
+	/// Solo retorna el nombre de la marca en la posición 0 y el valor en la posición 1
 	private String[] obtenerMarcaMasVendidaPorValor (){
 		almacenarMarcasMasVendidasPorValor();
 		String[] marcaMasVendidaValor = {"Marca", "$Valor Marca"};
@@ -132,6 +153,13 @@ public class ReporteMasVendidosDTO{
 		return marcaMasVendidaValor;
 	}
 
+	/// Metodo encargado de obtener los datos de las líneas de los productos vendidos por valor
+	///
+	/// @return String[]: Datos de las líneas de los productos vendidos por valor (Línea, Valor Línea).
+	///
+	/// Solo retorna los datos de las líneas de los productos vendidos por valor que tengan un valor mayor a 0.
+	///
+	/// Solo retorna el nombre de la línea en la posición 0 y el valor en la posición 1
 	private String[] obtenerLineaMasVendidaPorValor (){
 		almacenarLineasMasVendidasPorValor();
 		String[] lineaMasVendidaValor = {"Linea", "$Valor Linea"};
@@ -147,6 +175,13 @@ public class ReporteMasVendidosDTO{
 		return lineaMasVendidaValor;
 	}
 
+	/// Metodo encargado de obtener los datos de las marcas de los productos vendidos por cantidad
+	///
+	/// @return String[]: Datos de las marcas de los productos vendidos por cantidad (Marca, Cantidad Marca).
+	///
+	/// Solo retorna los datos de las marcas de los productos vendidos por cantidad que tengan un valor mayor a 0.
+	///
+	/// Solo retorna el nombre de la marca en la posición 0 y el valor en la posición 1
 	private String[] obtenerMarcaMasVendidaPorCantidad (){
 		almacenarMarcasMasVendidasPorCantidad();
 		String[] marcaMasVendidaCantidad = {"Marca", "$Cantidad Marca"};
@@ -162,6 +197,13 @@ public class ReporteMasVendidosDTO{
 		return marcaMasVendidaCantidad;
 	}
 
+	/// Metodo encargado de obtener los datos de las líneas de los productos vendidos por cantidad
+	///
+	/// @return String[]: Datos de las líneas de los productos vendidos por cantidad (Línea, Cantidad Línea).
+	///
+	/// Solo retorna los datos de las líneas de los productos vendidos por cantidad que tengan un valor mayor a 0.
+	///
+	/// Solo retorna el nombre de la línea en la posición 0 y el valor en la posición 1
 	private String[] obtenerLineaMasVendidaPorCantidad (){
 		almacenarLineasMasVendidasPorCantidad();
 		String[] lineaMasVendidaCantidad = {"Linea", "$Cantidad Linea"};
@@ -177,6 +219,9 @@ public class ReporteMasVendidosDTO{
 		return lineaMasVendidaCantidad;
 	}
 
+	/// Metodo encargado de obtener la tabla de los productos vendidos por valor
+	///
+	/// @return String: Tabla de los productos vendidos por valor
 	public String obtenerTablaMasVendidosValor (){
 		String        columna1 = "Concepto";
 		String        columna2 = "Valor";
@@ -207,6 +252,9 @@ public class ReporteMasVendidosDTO{
 		return tabla.toString();
 	}
 
+	/// Metodo encargado de obtener la tabla de los productos vendidos por cantidad
+	///
+	/// @return String: Tabla de los productos vendidos por cantidad
 	public String obtenerTablaMasVendidosCantidad (){
 		String        columna1 = "Concepto";
 		String        columna2 = "Cantidad";

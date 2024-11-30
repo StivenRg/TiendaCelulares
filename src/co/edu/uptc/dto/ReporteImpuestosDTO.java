@@ -21,6 +21,7 @@ public class ReporteImpuestosDTO{
 		listaProductos = paramListaProductos;
 	}
 
+	/// Metodo encargado de agregar los productos vendidos provenientes de las ventas
 	private void agregarProductos (){
 		listaProductosVendidos = new ArrayList <>();
 		for (Venta locVenta : listaVentas){
@@ -38,6 +39,11 @@ public class ReporteImpuestosDTO{
 		}
 	}
 
+	/// Metodo encargado de obtener el producto de la lista de productos Vendidos a partir del codigo
+	///
+	/// @param paramCodigoProducto: codigo del producto
+	///
+	/// @return Producto: Producto con el codigo indicado En caso de que no exista el producto, devuelve null
 	private Producto obtenerProducto (String paramCodigoProducto){
 		for (Producto locProducto : listaProductosVendidos){
 			if (locProducto.getCodigo().equals(paramCodigoProducto)){
@@ -47,6 +53,11 @@ public class ReporteImpuestosDTO{
 		return null;
 	}
 
+	/// Metodo encargado de obtener los datos del producto a partir del codigo
+	///
+	/// @param paramCodigoProducto: codigo del producto
+	///
+	/// @return Producto: Producto con el codigo indicado En caso de que no exista el producto, devuelve null
 	private Producto obtenerDatosProducto (String paramCodigoProducto){
 		for (Producto locProducto : listaProductos){
 			if (locProducto.getCodigo().equals(paramCodigoProducto)){
@@ -56,6 +67,9 @@ public class ReporteImpuestosDTO{
 		return null;
 	}
 
+	/// Metodo encargado de generar la cabecera de la tabla de impuestos
+	///
+	/// @return String: Cabecera de la tabla de impuestos
 	private String generarCabecerasTablaImpuestos (){
 		StringBuilder tablaImpuestos = new StringBuilder();
 		String        columna0       = "Impuesto";
@@ -65,6 +79,7 @@ public class ReporteImpuestosDTO{
 		return tablaImpuestos.toString();
 	}
 
+	/// Metodo encargado de calcular los impuestos
 	private void calcularImpuestos (){
 		agregarProductos();
 		final double precioBaseConGanancia = 1.25;
@@ -84,6 +99,9 @@ public class ReporteImpuestosDTO{
 		totalImpuesto     = impuesto5 + impuesto19;
 	}
 
+	/// Metodo encargado de obtener la tabla de impuestos
+	///
+	/// @return String: Tabla de impuestos
 	public String obtenerTablaImpuestos (){
 		StringBuilder tablaImpuestos = new StringBuilder(generarCabecerasTablaImpuestos());
 		calcularImpuestos();
