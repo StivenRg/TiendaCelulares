@@ -15,6 +15,8 @@ public class VentanaPrincipal extends JFrame{
 	private PanelBotones    botones;
 	private PanelPersona    persona;
 	private Tienda          tienda;
+	private Tabla           tabla;
+	private Log             log;
 
 	public VentanaPrincipal (){
 		setTitle("Mi Tienda");
@@ -26,12 +28,14 @@ public class VentanaPrincipal extends JFrame{
 		botones    = new PanelBotones(evento);
 		persona    = new PanelPersona(evento);
 		tienda     = new Tienda();
+		log        = new Log();
 
 		setLayout(new BorderLayout());
 		add(info, BorderLayout.WEST);
 		add(persona, BorderLayout.CENTER);
 		add(infoVentas, BorderLayout.EAST);
-		add(botones, BorderLayout.SOUTH);
+		add(botones, BorderLayout.NORTH);
+		add(log, BorderLayout.SOUTH);
 	}
 
 	public static void main (String[] args){

@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class PanelInventario extends JPanel{
+public class   PanelInventario extends JPanel{
 	private final JTextArea txInformacion;
 
 	public PanelInventario (Evento evento){
