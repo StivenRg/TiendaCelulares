@@ -2,8 +2,7 @@ package co.edu.uptc.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.*;
 
 public class Tabla extends JFrame{
 	private DefaultTableModel dtm;
@@ -29,23 +28,26 @@ public class Tabla extends JFrame{
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 	}
 
-	public void rellenarTabla (ArrayList <Object> paramArrayList){
-		for (Object paramObjeto : paramArrayList){
-			agregarFila(paramObjeto.toString().split(","));
+	public void rellenarTabla (String paramDatos){
+		String[] datosSeparados = paramDatos.split("\n");
+		for (String linea : datosSeparados){
+			agregarFila(linea);
 		}
 	}
 
-	private void agregarFila (Object[] datos){
-		if (datos.length != numeroColumnas){
-			new Log().registrar("No se pueden agregar los datos: " + Arrays.toString(datos));
+	private void agregarFila (String dato){
+		String[] datoSeparado = dato.split("\\|");
+		if (datoSeparado.length != numeroColumnas){
+			Log.registrar("Error: " + dato);
 			return;
 		}
-		dtm.addRow(datos);
+		dtm.addRow(datoSeparado);
 	}
 
 	public void mostrarTabla (){
 		JScrollPane locJScrollPane = new JScrollPane(tabla);
-		getContentPane().add(locJScrollPane);
+		getContentPane().add(locJScrollPane, BorderLayout.CENTER);
 		setVisible(true);
+		locJScrollPane.exit ;
 	}
 }

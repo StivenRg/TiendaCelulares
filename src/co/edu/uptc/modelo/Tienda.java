@@ -1,5 +1,9 @@
 package co.edu.uptc.modelo;
 
+// Aunque se importe desde la GUI, no implica estar usando interfaz gráfica, es un log de registro
+
+import co.edu.uptc.gui.Log;
+
 import java.util.ArrayList;
 
 public class Tienda{
@@ -37,7 +41,7 @@ public class Tienda{
 				}
 				productos.add(producto);
 			} catch (ArrayIndexOutOfBoundsException e){
-				System.err.println("Error en el formato de inventario: " + locLinea);
+				Log.registrar("Error al agregar producto: " + locLinea);
 			}
 		}
 	}
@@ -127,7 +131,7 @@ public class Tienda{
 				sNumeroCuenta   = locDato[4].strip();
 				tipoCuenta      = locDato[5].strip();
 			} catch (ArrayIndexOutOfBoundsException e){
-				System.err.println("Persona no válida: " + locLinea);
+				Log.registrar("Persona no válida: " + locLinea);
 				continue;
 			}
 
@@ -140,7 +144,7 @@ public class Tienda{
 					vendedores.add(vendedor);
 				}
 			} catch (NumberFormatException e){
-				System.err.println("Error en datos Vendedor: " + locLinea);
+				Log.registrar("Error en datos Vendedor: " + locLinea);
 			}
 		}
 	}
@@ -191,7 +195,7 @@ public class Tienda{
 				codigoProducto = locDato[1].strip();
 				sCantidad      = locDato[2].strip();
 			} catch (ArrayIndexOutOfBoundsException e){
-				System.err.println("Venta no válida: " + locLinea);
+				Log.registrar("Error al agregar venta: " + locLinea);
 				continue;
 			}
 
@@ -204,7 +208,7 @@ public class Tienda{
 					ventas.add(venta);
 				}
 			} catch (NumberFormatException e){
-				System.err.println("Error en venta: " + locLinea);
+				Log.registrar("Error al agregar venta: " + locLinea);
 			}
 		}
 	}

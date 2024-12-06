@@ -5,7 +5,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class Log extends JPanel{
-	private final JTextArea txLog;
+	private static JTextArea txLog;
 
 	public Log (){
 		setBorder(new TitledBorder("Registro de Log"));
@@ -15,11 +15,13 @@ public class Log extends JPanel{
 		add(txLog, BorderLayout.CENTER);
 	}
 
-	public void registrar (String mensaje){
-		txLog.setEditable(true);
+	public static void registrar (String mensaje){
 		txLog.append(mensaje);
 		txLog.append("\n");
 		txLog.setCaretPosition(txLog.getDocument().getLength());
-		txLog.setEditable(false);
+	}
+
+	public static void limpiar (){
+		txLog.setText("");
 	}
 }
