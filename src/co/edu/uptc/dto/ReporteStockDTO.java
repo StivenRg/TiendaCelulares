@@ -18,15 +18,16 @@ public class ReporteStockDTO{
 	/// Metodo encargado de generar la cabecera de la tabla de Inventario
 	///
 	/// @return String: Cabecera de la tabla de Inventario
-	public String generarCabecerasTablaInventario (){
-		String columna0 = "Codigo";
-		String columna1 = "Cantidad";
-		String columna2 = "Precio base";
-		String columna3 = "Precio venta";
-		String columna4 = "Impuestos";
-		String columna5 = "Comisiones";
-		String columna6 = "Ganancia";
-		return String.format("###| %-18s | %-18s | %-18s  | %-18s  | %-18s  | %-18s  | %-18s %n", columna0, columna1, columna2, columna3, columna4, columna5, columna6);
+	public String[] obtenerCabecerasTablaInventario (){
+		String columna0 = "# ID";
+		String columna1 = "Codigo";
+		String columna2 = "Cantidad";
+		String columna3 = "Precio base";
+		String columna4 = "Precio venta";
+		String columna5 = "Impuestos";
+		String columna6 = "Comisiones";
+		String columna7 = "Ganancia";
+		return new String[] {columna0, columna1, columna2, columna3, columna4, columna5, columna6, columna7};
 	}
 
 	/// Metodo encargado de obtener la tabla de Inventario
@@ -34,8 +35,8 @@ public class ReporteStockDTO{
 	/// @param productos: Lista de productos
 	///
 	/// @return String: Tabla de Inventario
-	public String obtenerTablaInventario (ArrayList <Producto> productos){
-		StringBuilder tablaInventario = new StringBuilder(generarCabecerasTablaInventario());
+	public String obtenerDatosTablaInventario (ArrayList <Producto> productos){
+		StringBuilder tablaInventario = new StringBuilder();
 		int           i               = 1;
 
 		totalCelulares  = 0;

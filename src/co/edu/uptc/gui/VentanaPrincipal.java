@@ -20,6 +20,7 @@ public class VentanaPrincipal extends JFrame{
 	public VentanaPrincipal (){
 		setTitle("Mi Tienda");
 		setSize(1200, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		Evento evento = new Evento(this);
 		info       = new PanelInventario(evento);
@@ -66,10 +67,10 @@ public class VentanaPrincipal extends JFrame{
 	public void generarInformeInventario (){
 		Log.registrar("Cargando Informe deInventario...");
 		ReporteStockDTO reporteStock = new ReporteStockDTO();
-		Tabla           tabla        = new Tabla("Reporte de Inventario", 2, 5);
-		String[]        cabeceras    = {"Total Celulares", "Total Precio Base", "Total Precio Venta", "Total Impuestos", "Total Comisiones", "Total Ganancia"};
+		Tabla           tabla        = new Tabla("Reporte de Inventario", 2, 8);
+		String[]        cabeceras    = reporteStock.obtenerCabecerasTablaInventario();
 		tabla.generarCabecera(cabeceras);
-		tabla.rellenarTabla(reporteStock.obtenerTablaInventario(tienda.getProductos()));
+		tabla.rellenarTabla(reporteStock.obtenerDatosTablaInventario(tienda.getProductos()));
 		tabla.mostrarTabla();
 		Log.registrar("Informe Cargado Correctamente");
 	}

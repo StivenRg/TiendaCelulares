@@ -26,6 +26,7 @@ public class Tabla extends JFrame{
 		dtm.setColumnIdentifiers(nombreColumnas);
 		tabla = new JTable(dtm);
 		tabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	public void rellenarTabla (String paramDatos){
@@ -48,6 +49,5 @@ public class Tabla extends JFrame{
 		JScrollPane locJScrollPane = new JScrollPane(tabla);
 		getContentPane().add(locJScrollPane, BorderLayout.CENTER);
 		setVisible(true);
-		locJScrollPane.exit ;
 	}
 }
