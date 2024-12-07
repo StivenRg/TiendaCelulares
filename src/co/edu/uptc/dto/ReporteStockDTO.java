@@ -43,7 +43,7 @@ public class ReporteStockDTO{
 		totalPrecioBase = totalPrecioVenta = totalImpuesto = totalComision = totalGanancia = 0;
 
 		for (Producto locProducto : productos){
-			final double porcentajeConGanancia = 1.25;
+			final double porcentajeConGanancia = 1.35; //Modificacion de porcentaje de ganancia
 			final double porcentajeComision    = 0.05;
 
 			String codigoProducto = locProducto.getCodigo();
@@ -63,15 +63,7 @@ public class ReporteStockDTO{
 			totalComision += comision;
 			totalGanancia += ganancia;
 
-			tablaInventario.append(String.format("%3d| %-18s | %,-18d | $%,18.1f | $%,18.1f | $%,18.1f | $%,18.1f | $%,18.1f%n",
-			                                     i,
-			                                     codigoProducto,
-			                                     cantidad,
-			                                     invertido,
-			                                     precioVenta,
-			                                     impuesto,
-			                                     comision,
-			                                     ganancia));
+			tablaInventario.append(String.format("%d| %s | %,d | $%,.1f | $%,.1f | $%,.1f | $%,.1f | $%,.1f%n", i, codigoProducto, cantidad, invertido, precioVenta, impuesto, comision, ganancia));
 			i++;
 		}
 		tablaInventario.append(generarTotalesTablaInventario());
@@ -95,7 +87,7 @@ public class ReporteStockDTO{
 	/// @return String: Cabecera de la tabla de Totales
 	public String generarTotalesTablaInventario (){
 		StringBuilder tablaInventario = new StringBuilder();
-		tablaInventario.append(String.format("%3s| %-18s | %,-18d | $%,18.1f | $%,18.1f | $%,18.1f | $%,18.1f | $%,18.1f%n",
+		tablaInventario.append(String.format("%s| %s | %,d | $%,.1f | $%,.1f | $%,.1f | $%,.1f | $%,.1f%n",
 		                                     "-",
 		                                     "Totales",
 		                                     totalCelulares,

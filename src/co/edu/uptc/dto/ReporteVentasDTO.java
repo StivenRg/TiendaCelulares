@@ -22,7 +22,7 @@ public class ReporteVentasDTO{
 	/// Metodo encargado de generar la cabecera de la tabla de ventas por vendedor
 	///
 	/// @return String: Cabecera de la tabla de ventas por vendedor
-	public String generarCabecerasTablaVentasPorVendedor (){
+	public String[] generarCabecerasTablaVentasPorVendedor (){
 		StringBuilder tablaVentasPorVendedor = new StringBuilder();
 		String        columna0               = "Tipo ID y #";
 		String        columna1               = "Nombre";
@@ -30,8 +30,8 @@ public class ReporteVentasDTO{
 		String        columna3               = "# cuenta";
 		String        columna4               = "Tipo cuenta";
 		String        columna5               = "# ventas";
-		tablaVentasPorVendedor.append(String.format("###|%-15s|%-15s|%-15s|%-16s|%-12s|%-4s%n", columna0, columna1, columna2, columna3, columna4, columna5));
-		return tablaVentasPorVendedor.toString();
+		tablaVentasPorVendedor.append(String.format("###|%s|%s|%s|%s|%s|%s%n", columna0, columna1, columna2, columna3, columna4, columna5));
+		return tablaVentasPorVendedor.toString().split("\\|");
 	}
 
 	/// Metodo encargado de obtener la tabla de ventas por vendedor
@@ -40,7 +40,7 @@ public class ReporteVentasDTO{
 	///
 	/// @return String: Tabla de ventas por vendedor
 	public String obtenerTablaVentas (ArrayList <Vendedor> vendedores){
-		StringBuilder tablaVentasPorVendedor = new StringBuilder(generarCabecerasTablaVentasPorVendedor());
+		StringBuilder tablaVentasPorVendedor = new StringBuilder();
 		int           i                      = 1;
 		for (Vendedor locVendedor : vendedores){
 			ID                = locVendedor.getTipoID() + " " + locVendedor.getNumeroID();
@@ -49,7 +49,7 @@ public class ReporteVentasDTO{
 			numeroCuentaBanco = locVendedor.getNumeroCuenta();
 			tipoCuentaBanco   = locVendedor.getTipoCuenta();
 			celularesVendidos = calcularCelularesVendidos(locVendedor);
-			tablaVentasPorVendedor.append(String.format("%3d|%-15s|%-15s|$%,14.1f|%16d|%-12s|%,4d%n", i, ID, nombreVendedor, totalComisiones, numeroCuentaBanco, tipoCuentaBanco, celularesVendidos));
+			tablaVentasPorVendedor.append(String.format("%d|%s|%s|$%,.1f|%d|%s|%,d%n", i, ID, nombreVendedor, totalComisiones, numeroCuentaBanco, tipoCuentaBanco, celularesVendidos));
 			i++;
 		}
 		return tablaVentasPorVendedor.toString();

@@ -70,19 +70,19 @@ public class ReporteImpuestosDTO{
 	/// Metodo encargado de generar la cabecera de la tabla de impuestos
 	///
 	/// @return String: Cabecera de la tabla de impuestos
-	private String generarCabecerasTablaImpuestos (){
+	public String[] obtenerCabecerasTablaImpuestos (){
 		StringBuilder tablaImpuestos = new StringBuilder();
 		String        columna0       = "Impuesto";
 		String        columna1       = "Total bases grabables";
 		String        columna2       = "Total impuesto";
-		tablaImpuestos.append(String.format("%-20s|%-20s|%-20s%n", columna0, columna1, columna2));
-		return tablaImpuestos.toString();
+		tablaImpuestos.append(String.format("%s|%s|%s%n", columna0, columna1, columna2));
+		return tablaImpuestos.toString().split("\\|");
 	}
 
 	/// Metodo encargado de calcular los impuestos
 	private void calcularImpuestos (){
 		agregarProductos();
-		final double precioBaseConGanancia = 1.25;
+		final double precioBaseConGanancia = 1.35; //Modificacion de porcentaje de ganancia
 		baseGrabableImpuesto5  = 0;
 		baseGrabableImpuesto19 = 0;
 		for (Producto locProducto : listaProductosVendidos){
@@ -103,16 +103,16 @@ public class ReporteImpuestosDTO{
 	///
 	/// @return String: Tabla de impuestos
 	public String obtenerTablaImpuestos (){
-		StringBuilder tablaImpuestos = new StringBuilder(generarCabecerasTablaImpuestos());
+		StringBuilder tablaImpuestos = new StringBuilder();
 		calcularImpuestos();
 
 		String fila1 = "Impuesto 5%";
 		String fila2 = "Impuesto 19%";
-		tablaImpuestos.append(String.format("%-20s|$%,20.1f|$%,20.1f%n", fila1, baseGrabableImpuesto5, impuesto5));
-		tablaImpuestos.append(String.format("%-20s|$%,20.1f|$%,20.1f%n", fila2, baseGrabableImpuesto19, impuesto19));
+		tablaImpuestos.append(String.format("%s|$%,.1f|$%,.1f%n", fila1, baseGrabableImpuesto5, impuesto5));
+		tablaImpuestos.append(String.format("%s|$%,.1f|$%,.1f%n", fila2, baseGrabableImpuesto19, impuesto19));
 
 		String fila3 = "Sumatoria de Totales";
-		tablaImpuestos.append(String.format("%-20s|$%,20.1f|$%,20.1f", fila3, totalBaseGrabable, totalImpuesto));
+		tablaImpuestos.append(String.format("%s|$%,.1f|$%,.1f", fila3, totalBaseGrabable, totalImpuesto));
 
 		return tablaImpuestos.toString();
 	}

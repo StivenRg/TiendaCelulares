@@ -67,8 +67,8 @@ public class VentanaPrincipal extends JFrame{
 	public void generarInformeInventario (){
 		Log.registrar("Cargando Informe deInventario...");
 		ReporteStockDTO reporteStock = new ReporteStockDTO();
-		Tabla           tabla        = new Tabla("Reporte de Inventario", 2, 8);
-		String[]        cabeceras    = reporteStock.obtenerCabecerasTablaInventario();
+		tabla = new Tabla("Reporte de Inventario", 0, 8);
+		String[] cabeceras = reporteStock.obtenerCabecerasTablaInventario();
 		tabla.generarCabecera(cabeceras);
 		tabla.rellenarTabla(reporteStock.obtenerDatosTablaInventario(tienda.getProductos()));
 		tabla.mostrarTabla();
@@ -79,8 +79,8 @@ public class VentanaPrincipal extends JFrame{
 	public void generarInformeImpuestos (){
 		Log.registrar("Cargando Informe de Impuestos...");
 		ReporteImpuestosDTO reporteImpuestos = new ReporteImpuestosDTO(tienda.getVentas(), tienda.getProductos());
-		Tabla               tabla            = new Tabla("Reporte de Impuestos", 4, 3);
-		String[]            cabeceras        = {"Impuesto", "Total Bases Grabables", "Total Impuesto"};
+		tabla = new Tabla("Reporte de Impuestos", 0, 3);
+		String[] cabeceras = reporteImpuestos.obtenerCabecerasTablaImpuestos();
 		tabla.generarCabecera(cabeceras);
 		tabla.rellenarTabla(reporteImpuestos.obtenerTablaImpuestos());
 		tabla.mostrarTabla();
@@ -91,8 +91,8 @@ public class VentanaPrincipal extends JFrame{
 	public void generarInformeVentas (){
 		Log.registrar("Cargando Informe de Ventas...");
 		ReporteVentasDTO reporteVentas = new ReporteVentasDTO(tienda.getProductos());
-		Tabla            tabla         = new Tabla("Reporte de Ventas", 3, 6);
-		String[]         cabeceras     = {"Tipo y # ID", "Nombre Vendedor", "Total Comision", "# Cuenta Banco", "Tipo Cuenta Banco", "# Celulares Vendidos"};
+		Tabla            tabla         = new Tabla("Reporte de Ventas", 0, 7);
+		String[]         cabeceras     = reporteVentas.generarCabecerasTablaVentasPorVendedor();
 		tabla.generarCabecera(cabeceras);
 		tabla.rellenarTabla(reporteVentas.obtenerTablaVentas(tienda.getVendedores()));
 		tabla.mostrarTabla();
@@ -103,8 +103,8 @@ public class VentanaPrincipal extends JFrame{
 	public void generarInformeMasVendidos (){
 		Log.registrar("Cargando Informe de Productos Mas Vendidos...");
 		ReporteMasVendidosDTO reporteMasVendidos = new ReporteMasVendidosDTO(tienda.getVentas(), tienda.getProductos());
-		Tabla                 tabla              = new Tabla("Reporte de Productos Mas Vendidos", 4, 2);
-		String[]              cabeceras          = {"Concepto", "Valor"};
+		tabla = new Tabla("Reporte de Productos Mas Vendidos", 0, 2);
+		String[] cabeceras = reporteMasVendidos.obtenerCabecerasTablaMasVendidos();
 		tabla.generarCabecera(cabeceras);
 		tabla.rellenarTabla(reporteMasVendidos.obtenerTablaMasVendidosValor());
 		//tabla.rellenarTabla(reporteMasVendidos.obtenerTablaMasVendidosCantidad());

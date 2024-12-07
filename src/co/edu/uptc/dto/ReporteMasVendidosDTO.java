@@ -1,5 +1,7 @@
 package co.edu.uptc.dto;
 
+// Aunque se importe desde la GUI, no implica estar usando interfaz gráfica, es un log de registro creado allí
+
 import co.edu.uptc.gui.Log;
 import co.edu.uptc.modelo.Producto;
 import co.edu.uptc.modelo.Venta;
@@ -122,7 +124,7 @@ public class ReporteMasVendidosDTO{
 	///
 	/// @return double: Precio de la venta ((Precio Base + %Ganancia) + %Impuesto)
 	private double obtenerPrecioVenta (double precioBase){
-		double precioConGanancia = precioBase * 1.25;
+		double precioConGanancia = precioBase * 1.35; //Modificacion de porcentaje de ganancia
 		if (precioConGanancia > 600000){
 			return precioConGanancia * 1.19;
 		} else if (precioConGanancia > 0){
@@ -136,9 +138,13 @@ public class ReporteMasVendidosDTO{
 	///
 	/// @return String[]: Datos de las marcas de los productos vendidos por valor (Marca, Valor Marca).
 	///
-	/// 																														Solo retorna los datos de las marcas de los productos vendidos por valor que tengan un valor mayor a 0.
 	///
-	/// 																														Solo retorna el nombre de la marca en la posición 0 y el valor en la posición 1
+	///
+	/// 								Solo retorna los datos de las marcas de los productos vendidos por valor que tengan un valor mayor a 0.
+	///
+	///
+	///
+	/// 								Solo retorna el nombre de la marca en la posición 0 y el valor en la posición 1
 	private String[] obtenerMarcaMasVendidaPorValor (){
 		almacenarMarcasMasVendidasPorValor();
 		String[] marcaMasVendidaValor = {"Marca", "$Valor Marca"};
@@ -158,9 +164,13 @@ public class ReporteMasVendidosDTO{
 	///
 	/// @return String[]: Datos de las líneas de los productos vendidos por valor (Línea, Valor Línea).
 	///
-	/// 																														Solo retorna los datos de las líneas de los productos vendidos por valor que tengan un valor mayor a 0.
 	///
-	/// 																														Solo retorna el nombre de la línea en la posición 0 y el valor en la posición 1
+	///
+	/// 								Solo retorna los datos de las líneas de los productos vendidos por valor que tengan un valor mayor a 0.
+	///
+	///
+	///
+	/// 								Solo retorna el nombre de la línea en la posición 0 y el valor en la posición 1
 	private String[] obtenerLineaMasVendidaPorValor (){
 		almacenarLineasMasVendidasPorValor();
 		String[] lineaMasVendidaValor = {"Linea", "$Valor Linea"};
@@ -180,10 +190,13 @@ public class ReporteMasVendidosDTO{
 	///
 	/// @return String[]: Datos de las marcas de los productos vendidos por cantidad (Marca, Cantidad Marca).
 	///
-	/// 																														Solo retorna los datos de las marcas de los productos vendidos por cantidad que tengan un valor mayor
-	/// a 0.
 	///
-	/// 																														Solo retorna el nombre de la marca en la posición 0 y el valor en la posición 1
+	///
+	/// 								Solo retorna los datos de las marcas de los productos vendidos por cantidad que tengan un valor mayor a 0.
+	///
+	///
+	///
+	/// 								Solo retorna el nombre de la marca en la posición 0 y el valor en la posición 1
 	private String[] obtenerMarcaMasVendidaPorCantidad (){
 		almacenarMarcasMasVendidasPorCantidad();
 		String[] marcaMasVendidaCantidad = {"Marca", "$Cantidad Marca"};
@@ -203,10 +216,13 @@ public class ReporteMasVendidosDTO{
 	///
 	/// @return String[]: Datos de las líneas de los productos vendidos por cantidad (Línea, Cantidad Línea).
 	///
-	/// 																														Solo retorna los datos de las líneas de los productos vendidos por cantidad que tengan un valor mayor
-	/// a 0.
 	///
-	/// 																														Solo retorna el nombre de la línea en la posición 0 y el valor en la posición 1
+	///
+	/// 								Solo retorna los datos de las líneas de los productos vendidos por cantidad que tengan un valor mayor a 0.
+	///
+	///
+	///
+	/// 								Solo retorna el nombre de la línea en la posición 0 y el valor en la posición 1
 	private String[] obtenerLineaMasVendidaPorCantidad (){
 		almacenarLineasMasVendidasPorCantidad();
 		String[] lineaMasVendidaCantidad = {"Linea", "$Cantidad Linea"};
@@ -222,17 +238,24 @@ public class ReporteMasVendidosDTO{
 		return lineaMasVendidaCantidad;
 	}
 
+	public String[] obtenerCabecerasTablaMasVendidos (){
+		StringBuilder tabla    = new StringBuilder();
+		String        columna1 = "Concepto";
+		String        columna2 = "Valor";
+		tabla.append(String.format("%s | %s%n", columna1, columna2));
+
+		return tabla.toString().split("\\|");
+	}
+
 	/// Metodo encargado de obtener la tabla de los productos vendidos por valor
 	///
 	/// @return String: Tabla de los productos vendidos por valor
 	public String obtenerTablaMasVendidosValor (){
-		String        columna1 = "Concepto";
-		String        columna2 = "Valor";
-		StringBuilder tabla    = new StringBuilder(String.format("%-16s | %-16s%n", columna1, columna2));
-		String        fila1    = "Marca";
-		String        fila2    = "Ventas Marca";
-		String        fila3    = "Linea";
-		String        fila4    = "Ventas Linea";
+		StringBuilder tabla = new StringBuilder();
+		String        fila1 = "Marca";
+		String        fila2 = "Ventas Marca";
+		String        fila3 = "Linea";
+		String        fila4 = "Ventas Linea";
 
 		String[] marca = obtenerMarcaMasVendidaPorValor();
 		String[] linea = obtenerLineaMasVendidaPorValor();
@@ -247,10 +270,10 @@ public class ReporteMasVendidosDTO{
 			Log.registrar("Error en la tabla de Productos Mas Vendidos por Valor: " + e.getMessage());
 		}
 
-		tabla.append(String.format("%-16s | %16s%n", fila1, marca[0]));
-		tabla.append(String.format("%-16s | %,16.1f%n", fila2, valorMarca));
-		tabla.append(String.format("%-16s | %16s%n", fila3, linea[0]));
-		tabla.append(String.format("%-16s | %,16.1f%n", fila4, valorLinea));
+		tabla.append(String.format("%s | %s%n", fila1, marca[0]));
+		tabla.append(String.format("%s | %,.1f%n", fila2, valorMarca));
+		tabla.append(String.format("%s | %s%n", fila3, linea[0]));
+		tabla.append(String.format("%s | %,.1f%n", fila4, valorLinea));
 
 		return tabla.toString();
 	}

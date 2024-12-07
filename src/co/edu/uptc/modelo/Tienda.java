@@ -24,12 +24,19 @@ public class Tienda{
 		for (String locLinea : paramDatos){
 			String[] locDato = locLinea.strip().split("\\|");
 			try{
-				locDato[0] = locDato[0].strip();
-				locDato[1] = locDato[1].strip();
-				locDato[2] = locDato[2].strip();
-				locDato[3] = locDato[3].strip();
-				locDato[4] = locDato[4].strip();
-				Producto producto = new Producto(locDato[0], locDato[1], locDato[2], Double.parseDouble(locDato[3]), Integer.parseInt(locDato[4]));
+				locDato[0] = locDato[0].strip().replaceAll("\\s+", "");
+				locDato[1] = locDato[1].strip().replaceAll("\\s+", "");
+				locDato[2] = locDato[2].strip().replaceAll("\\s+", "");
+				locDato[3] = locDato[3].strip().replaceAll("\\s+", "");
+				locDato[4] = locDato[4].strip().replaceAll("\\s+", "");
+
+				Producto producto;
+				try{
+					producto = new Producto(locDato[0], locDato[1], locDato[2], Double.parseDouble(locDato[3]), Integer.parseInt(locDato[4]));
+				} catch (NumberFormatException e){
+					Log.registrar("Error al agregar producto: " + locLinea);
+					continue;
+				}
 				if (! validarCamposProducto(producto)){
 					continue;
 				}
@@ -62,6 +69,7 @@ public class Tienda{
 	///
 	/// @return boolean: true si los datos del producto son válidos, false en caso contrario
 	private boolean validarCamposProducto (Producto paramProducto){
+		if (paramProducto == null) return false;
 		if (paramProducto.getMarca().isBlank()){
 			return false;
 		}
@@ -125,11 +133,11 @@ public class Tienda{
 			String   nombre, sNumeroTelefono, tipoID, sNumeroID, tipoCuenta, sNumeroCuenta;
 			try{
 				nombre          = locDato[0].strip();
-				sNumeroTelefono = locDato[1].strip();
-				sNumeroID       = locDato[2].strip();
-				tipoID          = locDato[3].strip();
-				sNumeroCuenta   = locDato[4].strip();
-				tipoCuenta      = locDato[5].strip();
+				sNumeroTelefono = locDato[1].strip().replaceAll("\\s+", "");
+				sNumeroID       = locDato[2].strip().replaceAll("\\s+", "");
+				tipoID          = locDato[3].strip().replaceAll("\\s+", "");
+				sNumeroCuenta   = locDato[4].strip().replaceAll("\\s+", "");
+				tipoCuenta      = locDato[5].strip().replaceAll("\\s+", "");
 			} catch (ArrayIndexOutOfBoundsException e){
 				Log.registrar("Persona no válida: " + locLinea);
 				continue;
@@ -191,9 +199,9 @@ public class Tienda{
 			String[] locDato = locLinea.strip().split(separadorDato);
 			String   codigoVendedor, codigoProducto, sCantidad;
 			try{
-				codigoVendedor = locDato[0].strip();
-				codigoProducto = locDato[1].strip();
-				sCantidad      = locDato[2].strip();
+				codigoVendedor = locDato[0].strip().replaceAll("\\s+", "");
+				codigoProducto = locDato[1].strip().replaceAll("\\s+", "");
+				sCantidad      = locDato[2].strip().replaceAll("\\s+", "");
 			} catch (ArrayIndexOutOfBoundsException e){
 				Log.registrar("Error al agregar venta: " + locLinea);
 				continue;
